@@ -1,0 +1,40 @@
+.fix-width {
+    width: 78px !important;
+}
+
+.m-left-5{
+    margin-left: 5px !important;
+}
+
+.m-right-5{
+    margin-right: 5px !important;
+}
+
+.m-left-10{
+    margin-left: 10px !important;
+}
+
+.m-right-10{
+    margin-right: 10px !important;
+}
+
+.m-left-20{
+    margin-left: 20px !important;
+}
+
+.m-right-20{
+    margin-right: 20px !important;
+}
+
+.m-top-20{
+    margin-top: 20px !important;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #26A69A !important;
+    color: #fff;
+}
+
+table > thead >  tr > th {
+    text-align: center !important;
+}

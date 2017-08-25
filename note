@@ -1,0 +1,41 @@
+notes
+------------------------
+- title      : install html package laravel collective
+  required   : 'composer require laravelcollective/html'
+
+- title      : install laracasts/flash
+  requred    : 'composer require laracasts/flash'
+
+issue
+------------------------
+- code  : 1
+  issue : error migration
+- code  : 2
+  issue : 'node_modules' is not recognized as an internal or external command,
+- code  : 3
+  issue : Can`t add attribute in form helper Form::Open()
+- code  : 4
+  issue : Can`t create role_id foreign key in users table
+
+solved
+------------------------
+- code   : 1
+  solved : update app\Providers\AppServiceProvider.php
+    - adding use Illuminate\Support\Facades\Schema;
+    - adding Schema::defaultStringLength(191); in boot function
+
+- code   : 2
+  solved : update package.json
+    - run 'npm install --no-bin-links'
+    - install 'npm install --save-dev cross-env'
+
+- code   : 3
+  solved :
+    - adding 'foreach ($attribute as $key => $item) {$attributes[$key] = $item;}' in 'vendor/laravelcollective/html/src/FormBuilder.php'
+      in function open()
+    - Upgrade paramete in :
+      - open(array $options = []) -> open(array $options = [], array $attribute = [])
+      - model($model, array $options = []) -> model($model, array $options = [], array $attributes = [])
+
+- code   : 4
+  solved : manual foreign key

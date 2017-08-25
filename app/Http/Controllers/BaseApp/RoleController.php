@@ -1,0 +1,217 @@
+<?php
+
+namespace App\Http\Controllers\BaseApp;
+
+use App\Http\Controllers\Base\BaseAdminController;
+use App\Http\Requests\BaseApp\RoleRequest;
+use App\Repositories\BaseApp\Portals;
+use App\Repositories\BaseApp\Roles;
+use App\Role;
+use Illuminate\Http\Request;
+
+/**
+ * Class RoleController
+ * @package App\Http\Controllers\BaseApp
+ */
+class RoleController extends BaseAdminController
+{
+    /**
+     * @var Roles
+     */
+    private $roles;
+
+    /**
+     * RolesController constructor.
+     */
+    public function __construct(Roles $roles)
+    {
+        parent::__construct();
+        $this->roles = $roles;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        // set page template
+        $this->setTemplate('BaseApp.roles.index');
+        // load js
+        $this->loadJs('theme/admin-template/js/plugins/notifications/sweet_alert.min.js');
+        $this->loadJs('js/BaseApp/role/page_role.js');
+        //set page title
+        $this->setPageHeaderTitle('<span class="text-semibold">Roles</span> - List Role');
+        // set breadcumb
+        $data = [
+            [
+                'icon' => 'icon-users4',
+                'url' => 'home',
+                'title' => 'Dasboard'
+            ],
+            [
+                'title' => 'List Role'
+            ]
+        ];
+        $this->setBreadcumb($data);
+        //assign data
+        $this->assign('roles', $this->roles->getListPaginate(10));
+        // display page
+        return $this->displayPage();
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Portals $portals)
+    {
+        // set page template
+        $this->setTemplate('BaseApp.roles.add');
+        // load js
+        $this->loadJs('theme/admin-template/js/plugins/forms/validation/validate.min.js');
+        $this->loadJs('theme/admin-template/js/plugins/forms/validation/additional_methods.min.js');
+        $this->loadJs('theme/admin-template/js/plugins/forms/selects/select2.min.js');
+        $this->loadJs('js/BaseApp/role/page_role.js');
+        $this->loadJs('js/BaseApp/role/validation.js');
+        //set page title
+        $this->setPageHeaderTitle('<span class="text-semibold">Roles</span> - Add Role');
+        // set breadcumb
+        $data = [
+            [
+                'icon' => 'icon-users4',
+                'url' => 'home',
+                'title' => 'Dasboard'
+            ],
+            [
+                'title' => 'List Role',
+                'url' => 'base/roles',
+            ],
+            [
+                'title' => 'Add Role',
+            ],
+
+        ];
+        $this->setBreadcumb($data);
+        // assign data
+        $this->assign('portals', $portals->getAllSelect());
+        // display page
+        return $this->displayPage();
+    }
+
+
+    /**
+     * @param RoleRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function store(RoleRequest $request)
+    {
+        // proses simpan data role ke database
+        if($this->roles->createRole($request->all())){
+            // set notificarion success
+            flash('Berhasil tambah data role.')->success()->important();
+        }else{
+            // set notofication error
+            flash('Gagal tambah data role.')->error()->important();
+        }
+        // default page
+        return redirect('base/roles/create');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+
+    /**
+     * Show edit form role from resource
+     * @param Role $role
+     * @param Portals $portals
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Role $role, Portals $portals)
+    {
+        // set template
+        $this->setTemplate('BaseApp.roles.edit');
+        // load js
+        $this->loadJs('theme/admin-template/js/plugins/forms/validation/validate.min.js');
+        $this->loadJs('theme/admin-template/js/plugins/forms/validation/additional_methods.min.js');
+        $this->loadJs('js/BaseApp/role/page_role.js');
+        $this->loadJs('js/BaseApp/role/validation.js');
+        //set page title
+        $this->setPageHeaderTitle('<span class="text-semibold">Portals</span> - Edit Portal');
+        // set breadcumb
+        $data = [
+            [
+                'icon' => 'icon-users4',
+                'url' => 'home',
+                'title' => 'Dasboard'
+            ],
+            [
+                'title' => 'List Role',
+                'url' => 'base/roles',
+            ],
+            [
+                'title' => 'Edit Role',
+            ],
+
+        ];
+        $this->setBreadcumb($data);
+        // assign data
+        $this->assign('portals', $portals->getAllSelect());
+        $this->assign('role', $role);
+        // display page
+        return  $this->displayPage();
+    }
+
+
+    /**
+     * Update the specified resource from storage.
+     * @param RoleRequest $request
+     * @param Role $role
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(RoleRequest $request, Role $role)
+    {
+        // proses update data di database
+        if($this->roles->updateRole($request->all(), $role->id)){
+            // set notificasi success
+            flash('Berhasil ubah data role')->success()->important();
+        }else{
+            // set notificasi error
+            flash('Gagal ubah data role')->error()->important();
+        }
+        // redirect page
+        return redirect('base/roles/'.$role->id.'/edit');
+    }
+
+
+    /**
+     * Proses hapus role dari database
+     * @param Role $role
+     * @param RoleRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function destroy(Role $role, RoleRequest $request)
+    {
+        // cek request apakah ajax
+        if ($request->ajax()){
+            // proses hapus role dari database
+            if($this->roles->deleteRole($role->id)){
+                // set response
+                return response(['message' => 'Berhasil menghapus user.', 'status' => 'success']);
+            }
+        }
+        // default response
+        return response(['message' => 'Gagal menghapus user', 'status' => 'failed']);
+    }
+}
