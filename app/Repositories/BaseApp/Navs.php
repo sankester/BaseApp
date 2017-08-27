@@ -60,6 +60,12 @@ class Navs
         return $listParent;
     }
 
+    public static function getNavByUrl($url)
+    {
+        $nav = Nav::where('nav_url','=',$url)->first();
+        return $nav;
+    }
+
     /**
      * Proses menyimpan navigasi ke database
      * @param $params

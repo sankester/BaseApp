@@ -23,9 +23,10 @@ class RoleController extends BaseAdminController
     /**
      * RolesController constructor.
      */
-    public function __construct(Roles $roles)
+    public function __construct(Roles $roles, Request $request)
     {
-        parent::__construct();
+        // load parent construct
+        parent::__construct($request);
         $this->roles = $roles;
     }
 
@@ -36,6 +37,8 @@ class RoleController extends BaseAdminController
      */
     public function index()
     {
+        // set rule page
+        $this->setRule('r');
         // set page template
         $this->setTemplate('BaseApp.roles.index');
         // load js
@@ -68,6 +71,8 @@ class RoleController extends BaseAdminController
      */
     public function create(Portals $portals)
     {
+        // set rule page
+        $this->setRule('c');
         // set page template
         $this->setTemplate('BaseApp.roles.add');
         // load js
@@ -108,6 +113,8 @@ class RoleController extends BaseAdminController
      */
     public function store(RoleRequest $request)
     {
+        // set rule page
+        $this->setRule('c');
         // proses simpan data role ke database
         if($this->roles->createRole($request->all())){
             // set notificarion success
@@ -140,6 +147,8 @@ class RoleController extends BaseAdminController
      */
     public function edit(Role $role, Portals $portals)
     {
+        // set rule page
+        $this->setRule('u');
         // set template
         $this->setTemplate('BaseApp.roles.edit');
         // load js
@@ -182,6 +191,8 @@ class RoleController extends BaseAdminController
      */
     public function update(RoleRequest $request, Role $role)
     {
+        // set rule page
+        $this->setRule('u');
         // proses update data di database
         if($this->roles->updateRole($request->all(), $role->id)){
             // set notificasi success

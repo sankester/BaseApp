@@ -8,6 +8,7 @@ use App\Repositories\BaseApp\Roles;
 use App\Repositories\BaseApp\Users;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UserController
@@ -17,14 +18,21 @@ class UserController extends BaseAdminController
 {
     public $users;
 
+    protected $user;
+
+    protected $signedIn;
+
     /**
      * UserController constructor.
      * @param Users $users
+     * @param Request $request
      */
-    public function __construct(Users $users)
+    public function __construct(Users $users, Request $request)
     {
-        parent::__construct();
+        // load parent construct
+        parent::__construct($request);
         $this->users = $users;
+
     }
 
     /**
@@ -34,6 +42,8 @@ class UserController extends BaseAdminController
      */
     public function index()
     {
+        // set rule page
+        $this->setRule('r');
         // set page template
         $this->setTemplate('BaseApp.users.index');
         // load js
@@ -61,10 +71,13 @@ class UserController extends BaseAdminController
     /**
      * Show the form for creating a new resource.
      *
+     * @param Roles $roles
      * @return \Illuminate\Http\Response
      */
     public function create(Roles $roles)
     {
+        // set rule page
+        $this->setRule('c');
         // set page template
         $this->setTemplate('BaseApp.users.add');
         // load js
@@ -107,6 +120,8 @@ class UserController extends BaseAdminController
      */
     public function store(UserRequest $request)
     {
+        // set rule page
+        $this->setRule('c');
         // proses tambah user ke databse
         if($this->users->createUser($request->all())){
             // set notification success
@@ -137,6 +152,8 @@ class UserController extends BaseAdminController
      */
     public function edit(User $user,  Roles $roles)
     {
+        // set rule page
+        $this->setRule('u');
         // set template
         $this->setTemplate('BaseApp.users.edit');
         // load js
@@ -181,6 +198,8 @@ class UserController extends BaseAdminController
      */
     public function update(UserRequest $request, User $user)
     {
+        // set rule page
+        $this->setRule('u');
         // proses update data user di database
         if($this->users->updateUser($request->all(), $user->id)){
             // set notification success
@@ -201,6 +220,8 @@ class UserController extends BaseAdminController
      */
     public function destroy(User $user, UserRequest $request)
     {
+        // set rule page
+        $this->setRule('d');
         // cek request ajax
         if ($request->ajax()){
              // proses hapus user dari database

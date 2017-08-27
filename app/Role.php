@@ -27,4 +27,9 @@ class Role extends Model
     {
         return $this->belongsTo('App\Portal');
     }
+
+    public function navs()
+    {
+        return $this->belongsToMany('App\Nav')->withPivot('c','r','u','d');
+    }
 }

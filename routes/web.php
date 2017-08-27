@@ -50,5 +50,12 @@ Route::prefix('base')->group(function () {
     Route::get('/navs/view/{portal_id}', 'BaseApp\NavController@view')->name('navs.view');
     Route::get('/navs/create/{portal_id}', 'BaseApp\NavController@create')->name('navs.create');
     Route::get('/navs/{portal_id}/{nav}/edit', 'BaseApp\NavController@edit')->name('navs.edit');
+    /**
+     * Route Permissions
+     */
+    Route::get('/permissions','BaseApp\PermissionController@index')->name('permissions.index');
+    Route::get('/permissions/{role}','BaseApp\PermissionController@edit')->name('permissions.edit');
+    Route::post('/permissions/{role}','BaseApp\PermissionController@update')->name('permissions.update');
+
 });
 

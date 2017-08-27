@@ -7,6 +7,7 @@ use App\Http\Controllers\Base\BaseAdminController;
 use App\Http\Requests\BaseApp\PortalRequest;
 use App\portal;
 use App\Repositories\BaseApp\Portals;
+use Illuminate\Http\Request;
 
 class PortalController extends BaseAdminController
 {
@@ -19,10 +20,10 @@ class PortalController extends BaseAdminController
      * PortalController constructor.
      * @param Portals $portals
      */
-    public function __construct(Portals $portals)
+    public function __construct(Portals $portals,Request $request)
     {
-        // load perent construct
-        parent::__construct();
+        // load parent construct
+        parent::__construct($request);
         // initial portal repositories
         $this->portals = $portals;
     }
@@ -33,6 +34,8 @@ class PortalController extends BaseAdminController
      */
     public function index()
     {
+        // set rule page
+        $this->setRule('r');
         // set page template
         $this->setTemplate('BaseApp.portals.index');
         // load js
@@ -65,6 +68,8 @@ class PortalController extends BaseAdminController
      */
     public function create()
     {
+        // set rule page
+        $this->setRule('c');
         // set page template
         $this->setTemplate('BaseApp.portals.add');
         // load js
@@ -103,6 +108,8 @@ class PortalController extends BaseAdminController
      */
     public function store(PortalRequest $request)
     {
+        // set rule page
+        $this->setRule('c');
         // proses tambah portal ke database
         if($this->portals->createPortal($request->all())){
             // set notifikasi sukses
@@ -134,6 +141,8 @@ class PortalController extends BaseAdminController
      */
     public function edit(portal $portal)
     {
+        // set rule page
+        $this->setRule('u');
         // set template
         $this->setTemplate('BaseApp.portals.edit');
         // load js
@@ -175,6 +184,8 @@ class PortalController extends BaseAdminController
      */
     public function update(PortalRequest $request, portal $portal)
     {
+        // set rule page
+        $this->setRule('u');
         // proses update data portal di database
         if($this->portals->updatePortal($request->all(), $portal->id)){
             // set notifikasi success

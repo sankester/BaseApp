@@ -24,7 +24,8 @@ class Nav extends Model
         return $this->belongsTo('App\Portal');
     }
 
-    public function childs() {
-        return $this->hasMany('App\Nav','parent_id','id') ;
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role')->withPivot('c','r','u','d');
     }
 }

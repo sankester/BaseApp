@@ -10,6 +10,7 @@ namespace App\Repositories\BaseApp;
 
 use Carbon\Carbon;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Users
@@ -25,6 +26,11 @@ class Users
     public function getListPaginate($limit)
     {
         return User::paginate($limit);
+    }
+
+    public function getDataLogin()
+    {
+        return Auth::user();
     }
 
     /**

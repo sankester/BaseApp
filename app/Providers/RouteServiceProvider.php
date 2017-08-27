@@ -42,6 +42,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('base/navs', function ($id) {
             return \App\Nav::all()->findOrFail($id);
         });
+
+        Route::bind('base/permissions', function ($id) {
+            return \App\Role::all()->findOrFail($id);
+        });
         /**
          * End bind base app model
          */

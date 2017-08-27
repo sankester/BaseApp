@@ -54,11 +54,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><i class="icon-user-lock"></i> <span>Permission</span></a>
-                        <ul>
-                            <li><a href="{{ route('users.index') }}">List Permissions</a></li>
-                            <li><a href="{{ route('users.create') }}">Add Permissions</a></li>
-                        </ul>
+                        <a href="{{ route('permissions.index') }}"><i class="icon-user-lock"></i> <span>Permission</span></a>
                     </li>
                     <li class="navigation-header"><span>Site Manajement</span> <i class="icon-menu" title="Forms"></i></li>
                     <li>
@@ -69,10 +65,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><i class="icon-list"></i> <span>Menu</span></a>
-                        <ul>
-                            <li><a href="{{ route('navs.index') }}">List Menu</a></li>
-                        </ul>
+                        <a href="{{ route('navs.index') }}"><i class="icon-list"></i> <span>Menu</span></a>
                     </li>
 
                     <!-- /forms -->

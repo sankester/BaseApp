@@ -7,6 +7,7 @@ use App\Http\Requests\BaseApp\NavRequest;
 use App\Nav;
 use App\Repositories\BaseApp\Navs;
 use App\Repositories\BaseApp\Portals;
+use Illuminate\Http\Request;
 
 class NavController extends BaseAdminController
 {
@@ -18,10 +19,10 @@ class NavController extends BaseAdminController
     /**
      * NavController constructor.
      */
-    public function __construct(Navs $navs)
+    public function __construct(Navs $navs, Request $request)
     {
         // load parent construct
-        parent::__construct();
+        parent::__construct($request);
         // initial nav repositories
         $this->navs = $navs;
     }
@@ -33,6 +34,8 @@ class NavController extends BaseAdminController
      */
     public function index(Portals $portals)
     {
+        // set rule page
+        $this->setRule('r');
         // set page template
         $this->setTemplate('BaseApp.navs.index');
         //set page title
@@ -62,6 +65,8 @@ class NavController extends BaseAdminController
      */
     public function create($portal_id)
     {
+        // set rule page
+        $this->setRule('c');
         // set page template
         $this->setTemplate('BaseApp.navs.add');
         // load style
@@ -115,6 +120,8 @@ class NavController extends BaseAdminController
      */
     public function store(NavRequest $request)
     {
+        // set rule page
+        $this->setRule('c');
         // proses tambah data menu ke database
         if($this->navs->createNav($request->all())){
             // set notification success
@@ -145,6 +152,8 @@ class NavController extends BaseAdminController
      */
     public function view($portal_id)
     {
+        // set rule page
+        $this->setRule('r');
         // set page template
         $this->setTemplate('BaseApp.navs.view');
         // load js
@@ -185,6 +194,8 @@ class NavController extends BaseAdminController
      */
     public function edit( $portal_id, Nav $nav)
     {
+        // set rule page
+        $this->setRule('u');
         // set template
         $this->setTemplate('BaseApp.navs.edit');
         // load style
@@ -220,7 +231,6 @@ class NavController extends BaseAdminController
             [
                 'title' => 'Edit Menu '
             ]
-
         ];
         $this->setBreadcumb($data);
         // assign data
@@ -240,6 +250,8 @@ class NavController extends BaseAdminController
      */
     public function update(NavRequest $request, Nav $nav)
     {
+        // set rule page
+        $this->setRule('u');
         // porses ubah data menu di database
         if($this->navs->updateNav($request->all(), $nav->id)){
             // set notification success
