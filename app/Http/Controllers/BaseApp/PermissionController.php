@@ -80,9 +80,22 @@ class PermissionController extends BaseAdminController
             ]
         ];
         $this->setBreadcumb($data);
+        // get data
+        $listMenu  = $this->permissions->getListMenu($role->portal_id,0,'');
+        foreach ( $listMenu as $key => $menu) {
+            $c = isset($menu->roles->where('id','=',$role->id)->first()->pivot->c) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->c :  0;
+            $r = isset($menu->roles->where('id','=',$role->id)->first()->pivot->r) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->r :  0;
+            $u = isset($menu->roles->where('id','=',$role->id)->first()->pivot->u) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->u :  0;
+            $d = isset($menu->roles->where('id','=',$role->id)->first()->pivot->d) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->d :  0;
+            if($c == 1 && $r == 1 && $u == 1 && $d == 1){
+                $listMenu[$key]->check_all = true;
+            }else{
+                $listMenu[$key]->check_all = false;
+            }
+        }
         //assign data
         $this->assign('role', $role);
-        $this->assign('listMenu', $this->permissions->getListMenu($role->portal_id,0,''));
+        $this->assign('listMenu', $listMenu );
         // display page
         return $this->displayPage();
     }

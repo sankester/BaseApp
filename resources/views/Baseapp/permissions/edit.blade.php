@@ -42,42 +42,29 @@
                                     {!! Form::hidden('roles['.$key.'][nav_id]', $menu->id) !!}
                                     <td>
                                         <span class="checked">
-                                            @if(
-                                            ($menu->roles->first()->pivot->c or 0 == 1)
-                                            &&
-                                            ($menu->roles->first()->pivot->r or 0 == 1)
-                                            &&
-                                            ($menu->roles->first()->pivot->u or 0 == 1)
-                                            &&
-                                            ($menu->roles->first()->pivot->d or 0 == 1)
-                                            )
-
-                                                {!! Form::checkbox('checked-all',$menu->id, true,['class' => 'checked-all styled']) !!}
-                                            @else
-                                                {!! Form::checkbox('checked-all',$menu->id, false,['class' => 'checked-all styled']) !!}
-                                            @endif
+                                            {!! Form::checkbox('checked-all',$menu->id, $menu->check_all ,['class' => 'checked-all styled']) !!}
                                         </span>
                                     </td>
                                     <td class="text-center">{{ ($key+1) }}</td>
                                     <td>{{ $menu->nav_title }}</td>
                                     <td class="text-center">
                                         <span class="checked">
-                                        {!! Form::checkbox('roles['.$key.'][c]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->c :  0, ['class' =>  'r'.$menu->id.' styled'] ) !!}
+                                        {!! Form::checkbox('roles['.$key.'][c]',1, isset($menu->roles->where('id','=',$role->id)->first()->pivot->c) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->c :  0, ['class' =>  'r'.$menu->id.' styled'] ) !!}
                                         </span>
                                     </td>
                                     <td class="text-center">
                                         <span class="checked">
-                                        {!! Form::checkbox('roles['.$key.'][r]',1, isset($menu->roles->first()->pivot->r) ?  $menu->roles->first()->pivot->c :  0, ['class' =>  'r'.$menu->id.' styled'] ) !!}
+                                        {!! Form::checkbox('roles['.$key.'][r]',1, isset($menu->roles->where('id','=',$role->id)->first()->pivot->r) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->r :  0, ['class' =>  'r'.$menu->id.' styled'] ) !!}
                                         </span>
                                     </td>
                                     <td class="text-center">
                                         <span class="checked">
-                                        {!! Form::checkbox('roles['.$key.'][u]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->u :  0 , ['class' => 'r'.$menu->id.' styled'] ) !!}
+                                        {!! Form::checkbox('roles['.$key.'][u]',1, isset($menu->roles->where('id','=',$role->id)->first()->pivot->u) ? $menu->roles->where('id','=',$role->id)->first()->pivot->u :  0 , ['class' => 'r'.$menu->id.' styled'] ) !!}
                                         </span>
                                     </td>
                                     <td class="text-center">
                                         <span class="checked">
-                                        {!! Form::checkbox('roles['.$key.'][d]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->d :  0 , ['class' => 'r'.$menu->id.' styled'] ) !!}
+                                        {!! Form::checkbox('roles['.$key.'][d]',1, isset($menu->roles->where('id','=',$role->id)->first()->pivot->d) ? $menu->roles->where('id','=',$role->id)->first()->pivot->d:  0 , ['class' => 'r'.$menu->id.' styled'] ) !!}
                                         </span>
                                     </td>
                                 </tr>

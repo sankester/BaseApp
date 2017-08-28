@@ -29,10 +29,11 @@ trait PageTrait
     protected $template;
 
     /**
+     * 
      * @var array
      */
     protected $akses_page = [
-        'is_akses' => true,
+        'is_access' => true,
         'code_error' => '',
         'nav_id' => '',
         'url' => ''
@@ -56,6 +57,7 @@ trait PageTrait
     }
 
     /**
+     * Add data to parsing in view
      * @param $key
      * @param $value
      */
@@ -64,14 +66,14 @@ trait PageTrait
         $this->data[$key] = $value;
     }
 
+
     /**
-     * @param null $page : name page show
-     * @param null $data
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Display page to view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     protected function displayPage()
     {
-        if ($this->akses_page['is_akses'] == false) {
+        if ($this->akses_page['is_access'] == false) {
             return redirect($this->akses_page['url'].$this->akses_page['code_error']. '/' .$this->akses_page['nav_id']);
         } else {
             $this->assign('page', $this->page);
@@ -106,14 +108,23 @@ trait PageTrait
         $this->page->setPageHeader($title);
     }
 
+    /**
+     * Set Breadcumb
+     * @param $params
+     */
     protected function setBreadcumb($params)
     {
         $this->page->getPageBreadcumb()->setBreadcumb($params);
     }
 
-    protected function setForbiddenAccess($code,$nav_id)
+    /**
+     * set access property
+     * @param $code
+     * @param $nav_id
+     */
+    protected function setForbiddenAccess($code, $nav_id)
     {
-        $this->akses_page['is_akses'] = false;
+        $this->akses_page['is_access'] = false;
         $this->akses_page['code_error'] = $code;
         $this->akses_page['url'] = 'base/forbidden/page/';
         $this->akses_page['nav_id'] = $nav_id;

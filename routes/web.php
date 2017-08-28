@@ -16,10 +16,7 @@ Route::get('/', function () {
 });
 
 //Auth::routes();
-// login
-Route::get('/login','Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login','Auth\LoginController@login');
-Route::post('/logout','Auth\LoginController@logout')->name('logout');
+
 
 //reset pass
 Route::post('/password/email','Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
@@ -31,6 +28,12 @@ Route::get('/password/reset/{token}', 'Auth\ResetPasswordController@showResetFor
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('base')->group(function () {
+    /**
+     * Login base
+     */
+    Route::get('/login','Auth\LoginController@showLoginForm')->name('base.login');
+    Route::post('/login','Auth\LoginController@login');
+    Route::post('/logout','Auth\LoginController@logout')->name('base.logout');
     /**
      * Route User
      */

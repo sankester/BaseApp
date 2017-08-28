@@ -62,4 +62,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Role');
     }
+
+    public function hasPortal($portal)
+    {
+        if ($this->role()->portal()->where('id', $portal)->first()) {
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

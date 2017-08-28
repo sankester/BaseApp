@@ -33,10 +33,7 @@ class BaseAdminController extends Controller
      * @var Request
      */
     protected $request;
-    /**
-     * @var
-     */
-    protected $user;
+
 
 
 
@@ -92,9 +89,11 @@ class BaseAdminController extends Controller
         isset($nav->portal_id) ? $this->nav_id = $nav->id : $this->nav_id  ;
     }
 
+
     /**
-     * Cek autoriseze rule
+     * Cek autorisasi
      * @param $rule
+     * @return array
      */
     protected function setRule($rule)
     {
@@ -102,11 +101,16 @@ class BaseAdminController extends Controller
         $result = Auth::user()->role->whereHas('navs', function ($query) {
             $query->where('id','=', $this->nav_id);
         })->get()->toArray();
-
+        // cek result
         if(!empty($result)){
-            // jika page tersedia
-            $roles = Auth::user()->role->navs->where('id','=', $this->nav_id)->first()->pivot->toArray();
+            // jika page already exist
+            if(! is_null(Auth::user()->role->navs->where('id','=', $this->nav_id)->first())) :
+                $roles = Auth::user()->role->navs->where('id','=', $this->nav_id)->first()->pivot->toArray();
+            else:
+                $roles = null;
+            endif;
             if(($roles[$rule] == '0') || empty($roles[$rule]) ){
+                // cek request
                 if($this->request->ajax()){
                     return [
                         'access' => 'failed',
@@ -117,6 +121,7 @@ class BaseAdminController extends Controller
                 }
             }
         }else{
+            // cek request
             if($this->request->ajax()){
                 return [
                     'access' => 'failed',

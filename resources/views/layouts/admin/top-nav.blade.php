@@ -20,7 +20,7 @@
         <ul class="nav navbar-nav navbar-right">
             <!-- Authentication Links -->
             @if (Auth::guest())
-                <li><a href="{{ route('login') }}">Login</a></li>
+                <li><a href="{{ route('base.login') }}">Login</a></li>
                 <li><a href="{{ route('register') }}">Register</a></li>
             @else
                 <li class="dropdown dropdown-user">
@@ -36,9 +36,9 @@
                         <li><a href="#"><span class="badge bg-teal-400 pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
                         <li class="divider"></li>
                         <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li>
-                        <li><a href="{{route('logout')}}" onclick="event.preventDefault();
+                        <li><a href="{{route('base.logout')}}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> Logout</a></li>
-                        <form id="logout-form" action="{{route('logout')}}" method="POST" style="display: none;">
+                        <form id="logout-form" action="{{route('base.logout')}}" method="POST" style="display: none;">
                             {{ csrf_field() }}
                         </form>
                     </ul>
