@@ -48,23 +48,23 @@ class Users
     /**
      * Update user
      * @param $params
-     * @param $id
+     * @param User $user
      * @return bool
+     * @internal param $id
      */
-    public function updateUser($params, $id){
-        $user = User::findorfail($id);
+    public function updateUser($params, User $user){
         return $user->update($params);
     }
 
     /**
      * Hapus user
-     * @param $id
+     * @param User $user
      * @return bool|null
      * @throws \Exception
+     * @internal param $id
      */
-    public function deleteUser($id)
+    public function deleteUser(User $user)
     {
-        $user = User::findOrFail($id);
         return  $userDelete = $user->delete();
     }
 }

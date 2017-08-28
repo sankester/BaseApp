@@ -1,7 +1,6 @@
 @extends('layouts.admin.app')
-
 @section('page-header')
-@include('layouts.admin.page-header')
+    @include('layouts.admin.page-header')
 @stop
 @section('content')
         <!-- Simple lists -->
@@ -28,7 +27,8 @@
                         <table class="table">
                             <thead>
                             <tr class="bg-teal-400">
-                                <th width="5%">#</th>
+                                <th width="5%"></th>
+                                <th width="7%">No</th>
                                 <th width="20%">Nama</th>
                                 <th>Cread</th>
                                 <th>Read</th>
@@ -40,19 +40,45 @@
                             @foreach($listMenu as $key => $menu)
                                 <tr>
                                     {!! Form::hidden('roles['.$key.'][nav_id]', $menu->id) !!}
+                                    <td>
+                                        <span class="checked">
+                                            @if(
+                                            ($menu->roles->first()->pivot->c or 0 == 1)
+                                            &&
+                                            ($menu->roles->first()->pivot->r or 0 == 1)
+                                            &&
+                                            ($menu->roles->first()->pivot->u or 0 == 1)
+                                            &&
+                                            ($menu->roles->first()->pivot->d or 0 == 1)
+                                            )
+
+                                                {!! Form::checkbox('checked-all',$menu->id, true,['class' => 'checked-all styled']) !!}
+                                            @else
+                                                {!! Form::checkbox('checked-all',$menu->id, false,['class' => 'checked-all styled']) !!}
+                                            @endif
+                                        </span>
+                                    </td>
                                     <td class="text-center">{{ ($key+1) }}</td>
                                     <td>{{ $menu->nav_title }}</td>
                                     <td class="text-center">
-                                        {!! Form::checkbox('roles['.$key.'][c]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->c :  0 ) !!}
+                                        <span class="checked">
+                                        {!! Form::checkbox('roles['.$key.'][c]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->c :  0, ['class' =>  'r'.$menu->id.' styled'] ) !!}
+                                        </span>
                                     </td>
                                     <td class="text-center">
-                                        {!! Form::checkbox('roles['.$key.'][r]',1, isset($menu->roles->first()->pivot->r) ?  $menu->roles->first()->pivot->c :  0  ) !!}
+                                        <span class="checked">
+                                        {!! Form::checkbox('roles['.$key.'][r]',1, isset($menu->roles->first()->pivot->r) ?  $menu->roles->first()->pivot->c :  0, ['class' =>  'r'.$menu->id.' styled'] ) !!}
+                                        </span>
                                     </td>
                                     <td class="text-center">
-                                        {!! Form::checkbox('roles['.$key.'][u]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->u :  0  ) !!}
+                                        <span class="checked">
+                                        {!! Form::checkbox('roles['.$key.'][u]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->u :  0 , ['class' => 'r'.$menu->id.' styled'] ) !!}
+                                        </span>
                                     </td>
                                     <td class="text-center">
-                                        {!! Form::checkbox('roles['.$key.'][d]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->d :  0 ) !!}
+                                        <span class="checked">
+                                        {!! Form::checkbox('roles['.$key.'][d]',1, isset($menu->roles->first()->pivot->c) ?  $menu->roles->first()->pivot->d :  0 , ['class' => 'r'.$menu->id.' styled'] ) !!}
+                                        </span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -83,4 +109,20 @@
     </div>
 </div>
 <!-- /simple lists -->
-@endsection
+@stop
+@section('costum-js')
+    <script>
+        $(document).ready(function () {
+            $(".checked-all").click(function () {
+                var status = $(this).is(":checked");
+                if (status == true) {
+                    $(".r" + $(this).val()).prop('checked', true);
+                } else {
+                    $(".r" + $(this).val()).prop('checked', false);
+                }
+                $(".styled").uniform();
+            });
+            $(".styled").uniform();
+        });
+    </script>
+@stop

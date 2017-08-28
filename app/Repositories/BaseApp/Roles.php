@@ -50,9 +50,8 @@ class Roles
      * @param $id
      * @return bool
      */
-    public function updateRole($params, $id){
-        $portal = Role::findorfail($id);
-        return $portal->update($params);
+    public function updateRole($params, Role $role){
+        return $role->update($params);
     }
 
     /**
@@ -61,9 +60,8 @@ class Roles
      * @return bool|null
      * @throws \Exception
      */
-    public function deleteRole($id)
+    public function deleteRole(Role $role)
     {
-        $role = Role::findOrFail($id);
         return  $roleDelete = $role->delete();
     }
 }

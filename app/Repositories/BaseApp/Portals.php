@@ -64,11 +64,11 @@ class Portals
     /**
      * Proses mengupdate data portal di database
      * @param $params
-     * @param $id
+     * @param Portal $portal
      * @return bool
+     * @internal param $id
      */
-    public function updatePortal($params, $id){
-        $portal = Portal::findorfail($id);
+    public function updatePortal($params, Portal $portal){
         return $portal->update($params);
     }
 
@@ -78,9 +78,8 @@ class Portals
      * @return bool|null
      * @throws \Exception
      */
-    public function deletePortal($id)
+    public function deletePortal(Portal $portal)
     {
-        $portal = Portal::findOrFail($id);
         return  $portalDelete = $portal->delete();
     }
 }

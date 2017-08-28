@@ -187,7 +187,7 @@ class PortalController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data portal di database
-        if($this->portals->updatePortal($request->all(), $portal->id)){
+        if($this->portals->updatePortal($request->all(), $portal)){
             // set notifikasi success
             flash('Berhasil ubah data portal')->success()->important();
         }else{
@@ -208,8 +208,13 @@ class PortalController extends BaseAdminController
     {
         // cek apakah ajax request
         if ($request->ajax()){
+            // cek rule
+            $access = $this->setRule('d');
+            if($access['access'] == 'failed'){
+                return response(['message' => $access['message'], 'status' => 'failed']);
+            }
             // proses hapus portal dari database
-            if($this->portals->deletePortal($portal->id)){
+            if($this->portals->deletePortal($portal)){
                 // set response
                 return response(['message' => 'Berhasil menghapus portal.', 'status' => 'success']);
             }

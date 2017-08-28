@@ -28,6 +28,15 @@ trait PageTrait
      */
     protected $template;
 
+    /**
+     * @var array
+     */
+    protected $akses_page = [
+        'is_akses' => true,
+        'code_error' => '',
+        'nav_id' => '',
+        'url' => ''
+    ];
 
     /**
      * Set Tempalte
@@ -50,7 +59,8 @@ trait PageTrait
      * @param $key
      * @param $value
      */
-    protected function assign($key, $value){
+    protected function assign($key, $value)
+    {
         $this->data[$key] = $value;
     }
 
@@ -61,8 +71,12 @@ trait PageTrait
      */
     protected function displayPage()
     {
-        $this->assign('page', $this->page);
-        return view($this->template, $this->data);
+        if ($this->akses_page['is_akses'] == false) {
+            return redirect($this->akses_page['url'].$this->akses_page['code_error']. '/' .$this->akses_page['nav_id']);
+        } else {
+            $this->assign('page', $this->page);
+            return view($this->template, $this->data);
+        }
     }
 
     /**
@@ -97,5 +111,12 @@ trait PageTrait
         $this->page->getPageBreadcumb()->setBreadcumb($params);
     }
 
+    protected function setForbiddenAccess($code,$nav_id)
+    {
+        $this->akses_page['is_akses'] = false;
+        $this->akses_page['code_error'] = $code;
+        $this->akses_page['url'] = 'base/forbidden/page/';
+        $this->akses_page['nav_id'] = $nav_id;
+    }
 
 }

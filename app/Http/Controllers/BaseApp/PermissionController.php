@@ -31,7 +31,7 @@ class PermissionController extends BaseAdminController
     public function index()
     {
         // set rule page
-//        $this->setRule('r');
+        $this->setRule('r');
         // set page template
         $this->setTemplate('BaseApp.permissions.index');
         //set page title
@@ -57,9 +57,11 @@ class PermissionController extends BaseAdminController
     public function edit(Role $role)
     {
         // set rule page
-//        $this->setRule('u');
+        $this->setRule('u');
         // set page template
         $this->setTemplate('BaseApp.permissions.edit');
+        // load js
+        $this->loadJs('theme/admin-template/js/plugins/forms/styling/uniform.min.js');
         //set page title
         $this->setPageHeaderTitle('<span class="text-semibold">Permissions</span> - List Menu');
         // set breadcumb
@@ -88,7 +90,7 @@ class PermissionController extends BaseAdminController
     public function update(Role $role, Request $request)
     {
         // set rule page
-//        $this->setRule('u');
+        $this->setRule('u');
         // proses update permissions
         $this->permissions->update($request->all(),$role);
         flash('Berhasil mengupdate permissions.')->success()->important();

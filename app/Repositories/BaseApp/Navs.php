@@ -80,23 +80,27 @@ class Navs
     /**
      * Proses mengupdate data navigasi di database
      * @param $params
-     * @param $id
+     * @param $nav
      * @return bool
+     * @internal param $id
      */
-    public function updateNav($params, $id){
-        $nav = Nav::findorfail($id);
+    public function updateNav($params, $nav){
         return $nav->update($params);
     }
 
     /**
      * Proses hapus navigasi dari database
-     * @param $id
+     * @param $nav
      * @return bool|null
-     * @throws \Exception
+     * @internal param $id
      */
-    public function deleteNav($id)
+    public function deleteNav($nav)
     {
-        $nav = Nav::findOrFail($id);
-        return  $nav->delete();
+        return $nav->delete();
+    }
+
+    public static function getById($id)
+    {
+        return Nav::findOrFail($id);
     }
 }

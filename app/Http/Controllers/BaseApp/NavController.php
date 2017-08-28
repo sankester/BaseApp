@@ -253,7 +253,7 @@ class NavController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // porses ubah data menu di database
-        if($this->navs->updateNav($request->all(), $nav->id)){
+        if($this->navs->updateNav($request->all(), $nav)){
             // set notification success
             flash('Berhasil ubah data menu')->success()->important();
         }else{
@@ -274,8 +274,13 @@ class NavController extends BaseAdminController
     {
         // cek apakah request adalah ajax
         if ($request->ajax()){
+            // cek rule
+            $access = $this->setRule('d');
+            if($access['access'] == 'failed'){
+                return response(['message' => $access['message'], 'status' => 'failed']);
+            }
             // proses hapus menu
-            if($this->navs->deleteNav($nav->id)){
+            if($this->navs->deleteNav($nav)){
                 // set response
                 return response(['message' => 'Berhasil menghapus menu.', 'status' => 'success']);
             }

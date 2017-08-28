@@ -201,7 +201,7 @@ class UserController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data user di database
-        if($this->users->updateUser($request->all(), $user->id)){
+        if($this->users->updateUser($request->all(), $user)){
             // set notification success
             flash('Berhasil ubah data user')->success()->important();
         }else{
@@ -224,8 +224,13 @@ class UserController extends BaseAdminController
         $this->setRule('d');
         // cek request ajax
         if ($request->ajax()){
+            // cek rule
+            $access = $this->setRule('d');
+            if($access['access'] == 'failed'){
+                return response(['message' => $access['message'], 'status' => 'failed']);
+            }
              // proses hapus user dari database
-            if($this->users->deleteUser($user->id)){
+            if($this->users->deleteUser($user)){
                 // set response
                 return response(['message' => 'Berhasil menghapus user.', 'status' => 'success']);
             }

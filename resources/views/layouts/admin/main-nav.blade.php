@@ -40,29 +40,17 @@
                     <!-- User Manajemen -->
                     <li class="navigation-header"><span>Users Manajement</span> <i class="icon-menu" title="Forms"></i></li>
                     <li>
-                        <a href="#"><i class="icon-users"></i> <span>Users</span></a>
-                        <ul>
-                            <li><a href="{{ route('users.index') }}">List User</a></li>
-                            <li><a href="{{ route('users.create') }}">Add User</a></li>
-                        </ul>
+                        <a href="{{ route('users.index') }}"><i class="icon-users"></i> <span>Users</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="icon-users4"></i> <span>Role</span></a>
-                        <ul>
-                            <li><a href="{{ route('roles.index') }}">List Role</a></li>
-                            <li><a href="{{ route('roles.create') }}">Add Role</a></li>
-                        </ul>
+                        <a href="{{ route('roles.index') }}"><i class="icon-users4"></i> <span>Role</span></a>
                     </li>
                     <li>
                         <a href="{{ route('permissions.index') }}"><i class="icon-user-lock"></i> <span>Permission</span></a>
                     </li>
                     <li class="navigation-header"><span>Site Manajement</span> <i class="icon-menu" title="Forms"></i></li>
                     <li>
-                        <a href="#"><i class="icon-earth"></i> <span>Portal</span></a>
-                        <ul>
-                            <li><a href="{{ route('portals.index') }}">List Portal</a></li>
-                            <li><a href="{{ route('portals.create') }}">Add Portal</a></li>
-                        </ul>
+                        <a href="{{ route('portals.index') }}"><i class="icon-earth"></i> <span>Portal</span></a>
                     </li>
                     <li>
                         <a href="{{ route('navs.index') }}"><i class="icon-list"></i> <span>Menu</span></a>

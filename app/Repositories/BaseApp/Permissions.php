@@ -13,6 +13,14 @@ use App\Role;
 
 class Permissions
 {
+    /**
+     * Mengambil list menu
+     * @param $portalId
+     * @param $parentId
+     * @param $indent
+     * @param array $navViews
+     * @return array
+     */
     public function getListMenu($portalId, $parentId, $indent, $navViews = array())
     {
         $portal = Portal::findOrFail($portalId);
@@ -32,18 +40,27 @@ class Permissions
         return  $navViews ;
     }
 
+    /**
+     * Proses update roles
+     * @param $roles
+     * @param Role $role
+     */
     public function update($roles, Role $role)
     {
+        // set default role
         $defaultRole = [
             'c' => 0,
             'r' => 0,
             'u' => 0,
             'd' => 0
         ];
+        // role to update repositories
         $roleToUpdate = array();
+        // loop roles
         foreach ($roles['roles'] as $key => $itemRole) {
-//            $roleToUpdate[$key]['role_id']= $role->id;
+            // set nav id to role repositories
             $roleToUpdate[$key]['nav_id']= intval($itemRole['nav_id']);
+            // set role repositories
             foreach ($defaultRole as $keyRoleDefault => $item) {
                 if(isset($itemRole[$keyRoleDefault])){
                     $roleToUpdate[$key][$keyRoleDefault]= intval($itemRole[$keyRoleDefault]);
@@ -52,25 +69,36 @@ class Permissions
                 }
             }
         }
+        // update date
         $this->syncRole($role, $roleToUpdate);
-
     }
 
+    /**
+     * @param Role $role
+     * @param array $roles
+     */
     public function syncRole(Role $role, array $roles)
     {
+        // list role
         $listRoleData = array();
+        // list navigation id
         $listNavId = array();
+        // get navigation and pust to list  navigation id
         foreach ($roles as $nav) {
             $listNavId[] = $nav['nav_id'];
         }
+        // get roles and pust to list role
         foreach ($roles as $key => $roleNav) {
             $listRoleData[$key]['c'] = $roleNav['c'];
             $listRoleData[$key]['r'] = $roleNav['r'];
             $listRoleData[$key]['u'] = $roleNav['u'];
             $listRoleData[$key]['d'] = $roleNav['d'];
         }
+        // hapus semua rolee berdasarkan role id
         $role->navs()->detach();
+        // looping to insert role
         foreach ($listNavId as $key => $navID) {
+            // insert new role
             $role->navs()->attach(
                 $navID,
                 [

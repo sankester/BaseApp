@@ -38,6 +38,8 @@ class BaseAdminController extends Controller
      */
     protected $user;
 
+
+
     /**
      * BaseAdminController constructor.
      * @param Request $request
@@ -105,10 +107,24 @@ class BaseAdminController extends Controller
             // jika page tersedia
             $roles = Auth::user()->role->navs->where('id','=', $this->nav_id)->first()->pivot->toArray();
             if(($roles[$rule] == '0') || empty($roles[$rule]) ){
-                dd('do not access');
+                if($this->request->ajax()){
+                    return [
+                        'access' => 'failed',
+                        'message' => 'maaf, anda tidak  mempunyai akses penuh untuk halaman ini'
+                    ];
+                }else{
+                    $this->setForbiddenAccess('403', $this->nav_id);
+                }
             }
         }else{
-            dd('page not found');
+            if($this->request->ajax()){
+                return [
+                    'access' => 'failed',
+                    'message' => 'maaf, halaman yang anda request tidak tersedia.'
+                ];
+            }else{
+                $this->setForbiddenAccess('404','');
+            }
         }
     }
 

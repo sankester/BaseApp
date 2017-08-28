@@ -194,7 +194,7 @@ class RoleController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data di database
-        if($this->roles->updateRole($request->all(), $role->id)){
+        if($this->roles->updateRole($request->all(), $role)){
             // set notificasi success
             flash('Berhasil ubah data role')->success()->important();
         }else{
@@ -216,8 +216,13 @@ class RoleController extends BaseAdminController
     {
         // cek request apakah ajax
         if ($request->ajax()){
+            // cek rule
+            $access = $this->setRule('d');
+            if($access['access'] == 'failed'){
+                return response(['message' => $access['message'], 'status' => 'failed']);
+            }
             // proses hapus role dari database
-            if($this->roles->deleteRole($role->id)){
+            if($this->roles->deleteRole($role)){
                 // set response
                 return response(['message' => 'Berhasil menghapus user.', 'status' => 'success']);
             }
