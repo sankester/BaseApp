@@ -57,6 +57,7 @@ class BaseAdminController extends Controller
     protected function setDefaultCss(){
         $css = [
             'theme/admin-template/css/icons/icomoon/styles.css',
+            'theme/admin-template/css/icons/fontawesome/styles.min.css',
             'theme/admin-template/css/all.css',
             'theme/admin-template/css/custom.css'
         ];
@@ -86,7 +87,8 @@ class BaseAdminController extends Controller
             $this->page->setTitle($nav->portal->site_title);
         }
         isset($nav->portal_id) ?  $this->portal_id = $nav->portal_id: $this->portal_id ;
-        isset($nav->portal_id) ? $this->nav_id = $nav->id : $this->nav_id  ;
+        isset($nav->portal_id) ?  $this->nav_id = $nav->id : $this->nav_id  ;
+        $this->assign('nav_id', $nav->id);
     }
 
 
@@ -99,7 +101,7 @@ class BaseAdminController extends Controller
     {
         // cek apakah page tersedia
         $result = Auth::user()->role->whereHas('navs', function ($query) {
-            $query->where('id','=', $this->nav_id);
+            $query->where('id','=', $this->nav_id)->where('active_st', '1');
         })->get()->toArray();
         // cek result
         if(!empty($result)){

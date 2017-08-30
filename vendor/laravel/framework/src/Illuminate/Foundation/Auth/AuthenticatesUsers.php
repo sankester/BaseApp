@@ -28,7 +28,6 @@ trait AuthenticatesUsers
     public function login(Request $request)
     {
         $this->validateLogin($request);
-
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
@@ -73,6 +72,7 @@ trait AuthenticatesUsers
     protected function attemptLogin(Request $request)
     {
         return $this->guard()->attempt(
+
             $this->credentials($request), $request->has('remember')
         );
     }
@@ -113,8 +113,11 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        //
+        // set default redirect user
+        return redirect()->intended($user->role->default_page);
     }
+
+
 
     /**
      * Get the failed login response instance.

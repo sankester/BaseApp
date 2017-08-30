@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
 use App\Repositories\BaseApp\Users;
@@ -25,6 +25,7 @@ class HomeController extends BaseAdminController
      */
     public function index()
     {
+        $this->setRule('r');
         // set page template
         $this->setTemplate('home');
         // set page header

@@ -15,6 +15,11 @@ class Nav extends Model
         'portal_id','parent_id', 'nav_title','nav_desc', 'nav_url','nav_no','active_st','display_st','nav_icon','nav_st','user_id'
     ];
 
+    public function scopePublished($query)
+    {
+        $query->where('display_st','=','1');
+    }
+
     /**
      * Satu navaigasi memepunya satu portal
      * Setiap satu portal dimiliki satu user

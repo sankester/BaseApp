@@ -24,10 +24,8 @@ Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm
 Route::post('/password/reset','Auth\ResetPasswordController@reset');
 Route::get('/password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
-
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::prefix('base')->group(function () {
+    Route::get('/home', 'BaseApp\HomeController@index')->name('base.home');
     /**
      * Login base
      */

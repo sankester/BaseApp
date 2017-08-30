@@ -29,7 +29,7 @@ class Navs
     public function getMenuByPortal($portalId, $parentId, $indent, $navViews = array())
     {
         $portal = Portal::findOrFail($portalId);
-        $navs = $portal->navs()->where('parent_id', $parentId)->get()->toArray();
+        $navs = $portal->navs()->where('parent_id', $parentId)->orderBy('nav_no', 'asc')->get()->toArray();
         if(! empty($navs)){
             foreach ($navs as $key => $nav) {
                 $nav['nav_title'] = $indent.$nav['nav_title'];
@@ -43,6 +43,52 @@ class Navs
         }
 		return  $navViews ;
     }
+
+    public function generateMenu($portalId , $nav_active)
+    {
+        $html = "";
+        //get nav by parent
+        $navs =Auth::user()->role->navs()->where('parent_id', 0)->where('display_st', '1')->orderBy('nav_no', 'asc')->get();
+        if (!empty($navs)) {
+            foreach ($navs as $key => $nav) {
+                $selected = ($nav->id == $nav_active) ? "class='active'" : "";
+                $url = ($nav->nav_st == 'internal') ? url($nav->nav_url) : $nav->nav_url;
+                $target = ($nav->nav_st != 'internal') ? '_blank' : '_self';
+                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa '.$nav->nav_icon :$nav->nav_icon;
+                $html .= '<li '.$selected.'>';
+                $html .= '<a href="'.$url.'" target="'.$target.'><i class="'.$icon.'"></i><span>'.$nav->nav_title.'</span></a>';
+                $str_child_html = $this->getChildNav($nav->id);
+                $html .= !empty($str_child_html) ? $str_child_html : '';
+                $html .= "</li>";
+            }
+        }
+        return $html;
+    }
+
+    private function getChildNav($nav_id){
+
+        $navs = Nav::where('parent_id', $nav_id)->orderBy('nav_no', 'asc')->get();
+        $html = '';
+        if($navs->count() > 0){
+            $html .= '<ul>';
+            foreach ($navs as $key => $nav) {
+                $html .= "<li>";
+                $url = ($nav->nav_st == 'internal') ? url($nav->nav_url) : $nav->nav_url;
+                $target = ($nav->nav_st != 'internal') ? '_blank' : '_self';
+                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa '.$nav->nav_icon :$nav->nav_icon;
+                $html .= '<a href="'.$url.'" target="'.$target.'"><i class="'.$icon.'"></i><span>'.$nav->nav_title.'</span></a>';
+                $childs =  Nav::where('parent_id', $nav->id)->orderBy('nav_no', 'asc')->get();
+                if(!empty($childs)){
+                    $html .= $this->getChildNav($nav->id);
+                }
+                $html .= "</li>";
+            }
+            $html .= '</ul>';
+        }
+        return  $html ;
+    }
+
+
 
     /**
      * Mengambil list menu berdasarkan parent

@@ -34,28 +34,7 @@
 
                     <!-- Main -->
                     <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
-                    <li class="active"><a href="{{ url('/home') }}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
-                    <!-- /main -->
-
-                    <!-- User Manajemen -->
-                    <li class="navigation-header"><span>Users Manajement</span> <i class="icon-menu" title="Forms"></i></li>
-                    <li>
-                        <a href="{{ route('users.index') }}"><i class="icon-users"></i> <span>Users</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ route('roles.index') }}"><i class="icon-users4"></i> <span>Role</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ route('permissions.index') }}"><i class="icon-user-lock"></i> <span>Permission</span></a>
-                    </li>
-                    <li class="navigation-header"><span>Site Manajement</span> <i class="icon-menu" title="Forms"></i></li>
-                    <li>
-                        <a href="{{ route('portals.index') }}"><i class="icon-earth"></i> <span>Portal</span></a>
-                    </li>
-                    <li>
-                        <a href="{{ route('navs.index') }}"><i class="icon-list"></i> <span>Menu</span></a>
-                    </li>
-
+                    {!! $navs->generateMenu(Auth::user()->role->portal->id, $nav_id) !!}
                     <!-- /forms -->
                 </ul>
             </div>
