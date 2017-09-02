@@ -1,11 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -43,7 +42,7 @@ class User extends Authenticatable
      */
     public function portals()
     {
-        return $this->hasMany('App\Portal');
+        return $this->hasMany('App\Model\Portal');
     }
 
     /**
@@ -51,7 +50,7 @@ class User extends Authenticatable
      */
     public function role()
     {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo('App\Model\Role');
     }
 
     public function hasPortal($portal)

@@ -14,7 +14,7 @@
             </a>
         </div>
     </div>
-    {!! Form::model($portal = new \App\Portal(),['url' => 'base/portals'], ['class' => 'form-horizontal form-validate-portal']) !!}
+    {!! Form::model($portal = new \App\Model\Portal(),['url' => 'base/portals'], ['class' => 'form-horizontal form-validate-portal']) !!}
         @include('Baseapp.portals.form',['textButton' => 'Add', 'icon' => 'icon-plus3'])
     {!! Form::close() !!}
 </div>

@@ -14,7 +14,7 @@
             </a>
         </div>
     </div>
-    {!! Form::model($nav = new \App\Nav,['url' => 'base/navs'], ['class' => 'form-horizontal form-validate-nav']) !!}
+    {!! Form::model($nav = new \App\Model\Nav,['url' => 'base/navs'], ['class' => 'form-horizontal form-validate-nav']) !!}
         @include('Baseapp.navs.form',['textButton' => 'Add', 'icon' => 'icon-plus3'])
     {!! Form::close() !!}
 </div>

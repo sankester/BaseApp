@@ -28,23 +28,23 @@ class RouteServiceProvider extends ServiceProvider
          * Start bind base app model
          */
         Route::bind('base/users', function ($id) {
-            return \App\User::all()->findOrFail($id);
+            return \App\Model\User::all()->findOrFail($id);
         });
 
         Route::bind('base/portals', function ($id) {
-            return \App\Portal::all()->findOrFail($id);
+            return \App\Model\Portal::all()->findOrFail($id);
         });
 
         Route::bind('base/roles', function ($id) {
-            return \App\Role::all()->findOrFail($id);
+            return \App\Model\Role::all()->findOrFail($id);
         });
 
         Route::bind('base/navs', function ($id) {
-            return \App\Nav::all()->findOrFail($id);
+            return \App\Model\Nav::all()->findOrFail($id);
         });
 
         Route::bind('base/permissions', function ($id) {
-            return \App\Role::all()->findOrFail($id);
+            return \App\Model\Role::all()->findOrFail($id);
         });
         /**
          * End bind base app model

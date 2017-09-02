@@ -4,28 +4,29 @@ namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
 use App\Http\Requests\BaseApp\NavRequest;
-use App\Nav;
-use App\Repositories\BaseApp\Navs;
-use App\Repositories\BaseApp\Portals;
+use App\Model\Nav;
+use App\Repositories\BaseApp\NavRepositories;
+use App\Repositories\BaseApp\PortalRepositories;
 use Illuminate\Http\Request;
 
 class NavController extends BaseAdminController
 {
     /**
-     * @var Navs
+     * @var NavRepositories
      */
-    private $navs;
+    private $repositories;
 
     /**
      * NavController constructor.
+     * @param NavRepositories $repositories
+     * @param Request $request
      */
-    public function __construct(Navs $navs, Request $request)
+    public function __construct(NavRepositories $repositories, Request $request)
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
         // initial nav repositories
-        $this->navs = $navs;
+        $this->repositories = $repositories;
     }
 
     /**
@@ -33,7 +34,7 @@ class NavController extends BaseAdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Portals $portals)
+    public function index(PortalRepositories $repositories)
     {
         // set rule page
         $this->setRule('r');
@@ -54,7 +55,7 @@ class NavController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         // assign data
-        $this->assign('portals',$portals->getAll());
+        $this->assign('portals',$repositories->getAll());
         // display page
         return $this->displayPage();
     }
@@ -82,7 +83,7 @@ class NavController extends BaseAdminController
         $this->loadJs('theme/admin-template/js/plugins/forms/validation/additional_methods.min.js');
         $this->loadJs('js/BaseApp/nav/validation.js');
         // set portal
-        $portal = Portals::getById($portal_id);
+        $portal = PortalRepositories::getById($portal_id);
         //set page title
         $this->setPageHeaderTitle('<span class="text-semibold">Menu</span> - Add Menu '.$portal->site_title);
         // set breadcumb
@@ -108,7 +109,7 @@ class NavController extends BaseAdminController
         $this->setBreadcumb($data);
         // assign data
         $this->assign('portal', $portal);
-        $this->assign('listParent', Navs::getMenuParent($portal_id));
+        $this->assign('listParent', NavRepositories::getMenuParent($portal_id));
         // display page
         return $this->displayPage();
     }
@@ -124,7 +125,7 @@ class NavController extends BaseAdminController
         // set rule page
         $this->setRule('c');
         // proses tambah data menu ke database
-        if($this->navs->createNav($request->all())){
+        if($this->repositories->createNav($request->all())){
             // set notification success
             flash('Berhasil tambah data menu.')->success()->important();
         }else{
@@ -138,7 +139,7 @@ class NavController extends BaseAdminController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Nav  $nav
+     * @param  \App\Model\Nav  $nav
      * @return \Illuminate\Http\Response
      */
     public function show(Nav $nav)
@@ -161,7 +162,7 @@ class NavController extends BaseAdminController
         $this->loadJs('theme/admin-template/js/plugins/notifications/sweet_alert.min.js');
         $this->loadJs('js/BaseApp/nav/page_nav.js');
         //set page title
-        $portal = Portals::getById($portal_id);
+        $portal = PortalRepositories::getById($portal_id);
         $this->setPageHeaderTitle('<span class="text-semibold">Menu</span> - List Menu '. $portal->site_title);
         // set breadcumb
         $data = [
@@ -180,7 +181,7 @@ class NavController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         // assign data
-        $listMenu = $this->navs->getMenuByPortal($portal_id, 0, '');
+        $listMenu = $this->repositories->getMenuByPortal($portal_id, 0, '');
         $this->assign('listMenu',$listMenu);
         $this->assign('portal', $portal);
         // display page
@@ -190,7 +191,8 @@ class NavController extends BaseAdminController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Nav  $nav
+     * @param $portal_id
+     * @param  \App\Model\Nav $nav
      * @return \Illuminate\Http\Response
      */
     public function edit( $portal_id, Nav $nav)
@@ -211,7 +213,7 @@ class NavController extends BaseAdminController
         $this->loadJs('theme/admin-template/js/plugins/forms/validation/additional_methods.min.js');
         $this->loadJs('js/BaseApp/nav/validation.js');
         // set portal
-        $portal = Portals::getById($portal_id);
+        $portal = PortalRepositories::getById($portal_id);
         //set page title
         $this->setPageHeaderTitle('<span class="text-semibold">Portals</span> - Edit Portal');
         // set breadcumb
@@ -236,7 +238,7 @@ class NavController extends BaseAdminController
         $this->setBreadcumb($data);
         // assign data
         $this->assign('portal', $portal);
-        $this->assign('listParent', Navs::getMenuParent($portal_id));
+        $this->assign('listParent', NavRepositories::getMenuParent($portal_id));
         $this->assign('nav', $nav);
         // display page
         return  $this->displayPage();
@@ -254,7 +256,7 @@ class NavController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // porses ubah data menu di database
-        if($this->navs->updateNav($request->all(), $nav)){
+        if($this->repositories->updateNav($request->all(), $nav)){
             // set notification success
             flash('Berhasil ubah data menu')->success()->important();
         }else{
@@ -268,7 +270,8 @@ class NavController extends BaseAdminController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Nav  $nav
+     * @param  \App\Model\Nav $nav
+     * @param NavRequest $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Nav $nav, NavRequest $request)
@@ -281,7 +284,7 @@ class NavController extends BaseAdminController
                 return response(['message' => $access['message'], 'status' => 'failed']);
             }
             // proses hapus menu
-            if($this->navs->deleteNav($nav)){
+            if($this->repositories->deleteNav($nav)){
                 // set response
                 return response(['message' => 'Berhasil menghapus menu.', 'status' => 'success']);
             }

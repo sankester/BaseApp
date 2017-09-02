@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
 use App\Libs\PageLib\PageTrait;
-use App\Repositories\BaseApp\Navs;
+use App\Repositories\BaseApp\NavRepositories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,6 +45,7 @@ class BaseAdminController extends Controller
     {
         $this->request = $request;
         $this->middleware('auth');
+        $this->middleware('isPortal:BaseApp Admin Portal');
         $this->initialPage();
         $this->setDefaultCss();
         $this->setDefaultJs();
@@ -82,7 +83,7 @@ class BaseAdminController extends Controller
      */
     protected function display_current_page(){
         $currentUrl =  $this->request->segment(1). '/'.$this->request->segment(2);
-        $nav = Navs::getNavByUrl($currentUrl);
+        $nav = NavRepositories::getNavByUrl($currentUrl);
         if($nav){
             $this->page->setTitle($nav->portal->site_title);
         }

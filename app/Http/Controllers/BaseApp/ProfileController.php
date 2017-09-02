@@ -4,25 +4,29 @@ namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
 use App\Http\Requests\BaseApp\UserRequest;
-use App\Repositories\BaseApp\Users;
-use Illuminate\Foundation\Auth\User;
+use App\Repositories\BaseApp\UserRepositories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends BaseAdminController
 {
-    protected $users;
+
+    /**
+     * @var UserRepositories
+     */
+    protected $repositories;
+
     /**
      * UserController constructor.
-     * @param Users $users
+     * @param UserRepositories $repositories
      * @param Request $request
+     * @internal param Users $users
      */
-    public function __construct(Users $users, Request $request)
+    public function __construct(UserRepositories $repositories, Request $request)
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
-        $this->users = $users;
+        $this->repositories = $repositories;
     }
 
     /**
@@ -72,7 +76,7 @@ class ProfileController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data user di database
-        if($this->users->updateUserLogin($request->all())){
+        if($this->repositories->updateUserLogin($request->all())){
             // set notification success
             flash('Berhasil ubah data user')->success()->important();
         }else{

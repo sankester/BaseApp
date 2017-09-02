@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,11 +26,11 @@ class Nav extends Model
      */
     public function portal()
     {
-        return $this->belongsTo('App\Portal');
+        return $this->belongsTo('App\Model\Portal');
     }
 
     public function roles()
     {
-        return $this->belongsToMany('App\Role')->withPivot('c','r','u','d');
+        return $this->belongsToMany('App\Model\Role')->withPivot('c','r','u','d');
     }
 }

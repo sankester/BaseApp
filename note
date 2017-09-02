@@ -18,6 +18,11 @@ issue
   issue : Can`t create role_id foreign key in users table
 - code  : 5
   issue : smptp not support
+- code  : 6
+  issue :
+    PHP Warning:  require(C:\xampp\htdocs\BaseApp\vendor\composer/../guzzlehttp/promises/src/functions_include.php)
+    Warning: require(C:\xampp\htdocs\BaseApp\vendor\composer/../guzzlehttp/promises/src/functions_include.php):
+    Fatal error: require(): Failed opening required 'C:\xampp\htdocs\BaseApp\vendor\composer/../guzzlehttp/promises/src/functions_include.php' (include_path='C:\xampp\php\PEAR')
 
 solved
 ------------------------
@@ -44,5 +49,8 @@ solved
 
 - code   : 5
   solved : delete cache config
+
+- code   : 6
+  solved : composer dumpautoload
 
 

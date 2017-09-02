@@ -3,31 +3,28 @@
 namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
-use App\Portal;
-use App\Repositories\BaseApp\Permissions;
-use App\Repositories\BaseApp\Roles;
-use App\Role;
+use App\Repositories\BaseApp\PermissionRepositories;
+use App\Repositories\BaseApp\RoleRepositories;
+use App\Model\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends BaseAdminController
 {
     /**
-     * @var Permissions
+     * @var PermissionRepositories
      */
-    private $permissions;
+    private $permissionRepositories;
 
     /**
-     * @var Roles
+     * @var RoleRepositories
      */
-    private $roles;
+    private $roleRepositories;
 
-    public function __construct(Permissions $permissions, Request $request, Roles $roles)
+    public function __construct(PermissionRepositories $permissionRepositories, Request $request, RoleRepositories $roleRepositories)
     {
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
-        $this->permissions = $permissions;
-        $this->roles = $roles;
+        $this->permissionRepositories = $permissionRepositories;
+        $this->roleRepositories = $roleRepositories;
     }
 
     public function index()
@@ -51,7 +48,7 @@ class PermissionController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         //assign data
-        $this->assign('roles', $this->roles->getListPaginate(10));
+        $this->assign('roles', $this->roleRepositories->getListPaginate(10));
         // display page
         return $this->displayPage();
     }
@@ -83,7 +80,7 @@ class PermissionController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         // get data
-        $listMenu  = $this->permissions->getListMenu($role->portal_id,0,'');
+        $listMenu  = $this->permissionRepositories->getListMenu($role->portal_id,0,'');
         foreach ( $listMenu as $key => $menu) {
             $c = isset($menu->roles->where('id','=',$role->id)->first()->pivot->c) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->c :  0;
             $r = isset($menu->roles->where('id','=',$role->id)->first()->pivot->r) ?  $menu->roles->where('id','=',$role->id)->first()->pivot->r :  0;
@@ -107,7 +104,7 @@ class PermissionController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update permissions
-        $this->permissions->update($request->all(),$role);
+        $this->permissionRepositories->update($request->all(),$role);
         flash('Berhasil mengupdate permissions.')->success()->important();
         // redirect page
         return redirect('base/permissions/'.$role->id);

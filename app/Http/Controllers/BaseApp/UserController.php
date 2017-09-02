@@ -4,17 +4,19 @@ namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
 use App\Http\Requests\BaseApp\UserRequest;
-use App\Repositories\BaseApp\Roles;
-use App\Repositories\BaseApp\Users;
-use App\User;
+use App\Repositories\BaseApp\RoleRepositories;
+use App\Repositories\BaseApp\UserRepositories;
+use App\Model\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 /**
  * Class UserController
  * @package App\Http\Controllers\BaseApp
  */
 class UserController extends BaseAdminController
 {
-    public $users;
+    public $repositories;
 
     protected $user;
 
@@ -22,15 +24,15 @@ class UserController extends BaseAdminController
 
     /**
      * UserController constructor.
-     * @param Users $users
+     * @param UserRepositories $repositories
      * @param Request $request
+     * @internal param Users $users
      */
-    public function __construct(Users $users, Request $request)
+    public function __construct(UserRepositories $repositories, Request $request)
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
-        $this->users = $users;
+        $this->repositories = $repositories;
 
     }
 
@@ -63,17 +65,17 @@ class UserController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         //assign data
-        $this->assign('users', $this->users->getListPaginate(10));
+        $this->assign('users', $this->repositories->getListPaginate(10));
         return $this->displayPage();
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param Roles $roles
+     * @param RoleRepositories $roles
      * @return \Illuminate\Http\Response
      */
-    public function create(Roles $roles)
+    public function create(RoleRepositories $roles)
     {
         // set rule page
         $this->setRule('c');
@@ -122,7 +124,7 @@ class UserController extends BaseAdminController
         // set rule page
         $this->setRule('c');
         // proses tambah user ke databse
-        if($this->users->createUser($request->all())){
+        if($this->repositories->createUser($request->all())){
             // set notification success
             flash('Berhasil tambah data user')->success()->important();
         }else{
@@ -136,8 +138,9 @@ class UserController extends BaseAdminController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param User $user
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
     public function show(User $user)
     {
@@ -147,9 +150,10 @@ class UserController extends BaseAdminController
     /**
      * Show the form for editing the specified resource.
      * @param User $user
+     * @param RoleRepositories $roles
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user,  Roles $roles)
+    public function edit(User $user,  RoleRepositories $roles)
     {
         // set rule page
         $this->setRule('u');
@@ -200,7 +204,7 @@ class UserController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data user di database
-        if($this->users->updateUser($request->all(), $user)){
+        if($this->repositories->updateUser($request->all(), $user)){
             // set notification success
             flash('Berhasil ubah data user')->success()->important();
         }else{
@@ -215,6 +219,7 @@ class UserController extends BaseAdminController
      * Remove the specified resource from storage.
      *
      * @param User $user
+     * @param UserRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(User $user, UserRequest $request)
@@ -228,14 +233,21 @@ class UserController extends BaseAdminController
             if($access['access'] == 'failed'){
                 return response(['message' => $access['message'], 'status' => 'failed']);
             }
-             // proses hapus user dari database
-            if($this->users->deleteUser($user)){
+            // apakah user login yang di hapus
+            if($user->id != Auth::user()->getAuthIdentifier()){
+                // proses hapus user dari database
+                if($this->repositories->deleteUser($user)){
+                    // set response
+                    return response(['message' => 'Berhasil menghapus user.', 'status' => 'success']);
+                }
+            }else{
                 // set response
-                return response(['message' => 'Berhasil menghapus user.', 'status' => 'success']);
+                return response(['message' => 'Tidak bisa mengahpus diri sendiri.', 'status' => 'failed']);
             }
+
         }
         // set default response
-        return response(['message' => 'Garegal menghapus user', 'status' => 'failed']);
+        return response(['message' => 'Gagal menghapus user', 'status' => 'failed']);
     }
 
 }

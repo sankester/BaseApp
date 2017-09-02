@@ -5,28 +5,29 @@ namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
 use App\Http\Requests\BaseApp\PortalRequest;
-use App\portal;
-use App\Repositories\BaseApp\Portals;
+use App\Model\portal;
+use App\Repositories\BaseApp\PortalRepositories;
 use Illuminate\Http\Request;
 
 class PortalController extends BaseAdminController
 {
     /**
-     * @var Portals
+     * @var PortalRepositories
      */
-    private $portals;
+    private $repositories;
 
     /**
      * PortalController constructor.
-     * @param Portals $portals
+     * @param PortalRepositories $repositories
+     * @param Request $request
+     * @internal param Portals $portals
      */
-    public function __construct(Portals $portals,Request $request)
+    public function __construct(PortalRepositories $repositories,Request $request)
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
         // initial portal repositories
-        $this->portals = $portals;
+        $this->repositories = $repositories;
     }
     /**
      * Display a listing of the resource.
@@ -57,7 +58,7 @@ class PortalController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         //assign data
-        $this->assign('portals', $this->portals->getListPaginate(10));
+        $this->assign('portals', $this->repositories->getListPaginate(10));
         // display page
         return $this->displayPage();
     }
@@ -112,7 +113,7 @@ class PortalController extends BaseAdminController
         // set rule page
         $this->setRule('c');
         // proses tambah portal ke database
-        if($this->portals->createPortal($request->all())){
+        if($this->repositories->createPortal($request->all())){
             // set notifikasi sukses
             flash('Berhasil tambah data portal')->success()->important();
         }else{
@@ -126,7 +127,7 @@ class PortalController extends BaseAdminController
     /**
      * Display the specified resource.
      *
-     * @param  \App\portal  $portal
+     * @param  \App\Model\portal  $portal
      * @return \Illuminate\Http\Response
      */
     public function show(portal $portal)
@@ -137,7 +138,7 @@ class PortalController extends BaseAdminController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\portal  $portal
+     * @param  \App\Model\portal  $portal
      * @return \Illuminate\Http\Response
      */
     public function edit(portal $portal)
@@ -188,7 +189,7 @@ class PortalController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data portal di database
-        if($this->portals->updatePortal($request->all(), $portal)){
+        if($this->repositories->updatePortal($request->all(), $portal)){
             // set notifikasi success
             flash('Berhasil ubah data portal')->success()->important();
         }else{
@@ -202,7 +203,8 @@ class PortalController extends BaseAdminController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\portal  $portal
+     * @param  \App\Model\portal $portal
+     * @param PortalRequest $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(portal $portal, PortalRequest $request)
@@ -215,7 +217,7 @@ class PortalController extends BaseAdminController
                 return response(['message' => $access['message'], 'status' => 'failed']);
             }
             // proses hapus portal dari database
-            if($this->portals->deletePortal($portal)){
+            if($this->repositories->deletePortal($portal)){
                 // set response
                 return response(['message' => 'Berhasil menghapus portal.', 'status' => 'success']);
             }

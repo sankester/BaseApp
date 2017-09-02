@@ -9,14 +9,14 @@
 namespace App\Repositories\BaseApp;
 
 
-use App\Portal;
+use App\Model\Portal;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Portals
  * @package App\Repositories\BaseApp
  */
-class Portals
+class PortalRepositories
 {
     /**
      * Mngambil data portal limit
@@ -37,6 +37,10 @@ class Portals
         return Portal::all();
     }
 
+    public function getCountPortal()
+    {
+        return Portal::all()->count();
+    }
     /**
      * Mengambil data portal untuk select
      * @return \Illuminate\Support\Collection

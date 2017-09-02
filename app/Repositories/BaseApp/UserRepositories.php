@@ -9,7 +9,7 @@
 namespace App\Repositories\BaseApp;
 
 use Carbon\Carbon;
-use App\User;
+use App\Model\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
  * Class Users
  * @package App\Repositories\BaseApp
  */
-class Users
+class UserRepositories
 {
     /**
      * Mengambil list user limit
@@ -29,6 +29,14 @@ class Users
         return User::paginate($limit);
     }
 
+    public function getCountUser()
+    {
+       return User::all()->count();
+    }
+    /**
+     * Get Data UserLogin
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     public function getDataLogin()
     {
         return Auth::user();
@@ -55,14 +63,23 @@ class Users
      * @internal param $id
      */
     public function updateUser($params, User $user){
-        if(isset( $params['password'])){
-            if(!empty( $params['password'])){
-                $params['password'] = Hash::make($params['password']);
-            }
+
+        if(!empty( $params['password']) || !is_null($params['password'])){
+            $params['password'] = Hash::make($params['password']);
+        }
+
+        if(is_null($params['password'])){
+            unset($params['password']);
+            unset($params['password_confirm']);
         }
         return $user->update($params);
     }
 
+    /**
+     * Update data user login
+     * @param $params
+     * @return mixed
+     */
     public function updateUserLogin($params)
     {
         if(!is_null( $params['password'])){

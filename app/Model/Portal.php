@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +20,7 @@ class Portal extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Model\User');
     }
 
     /**
@@ -28,7 +28,7 @@ class Portal extends Model
      */
     public function roles()
     {
-        return $this->hasMany('App\Role');
+        return $this->hasMany('App\Model\Role');
     }
 
     /**
@@ -37,6 +37,6 @@ class Portal extends Model
      */
     public function navs()
     {
-        return $this->hasMany('App\Nav','portal_id','id');
+        return $this->hasMany('App\Model\Nav','portal_id','id');
     }
 }

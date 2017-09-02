@@ -8,10 +8,10 @@
 
 namespace App\Repositories\BaseApp;
 
-use App\Portal;
-use App\Role;
+use App\Model\Portal;
+use App\Model\Role;
 
-class Permissions
+class PermissionRepositories
 {
     /**
      * Mengambil list menu

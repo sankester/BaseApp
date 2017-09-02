@@ -4,9 +4,9 @@ namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
 use App\Http\Requests\BaseApp\RoleRequest;
-use App\Repositories\BaseApp\Portals;
-use App\Repositories\BaseApp\Roles;
-use App\Role;
+use App\Repositories\BaseApp\PortalRepositories;
+use App\Repositories\BaseApp\RoleRepositories;
+use App\Model\Role;
 use Illuminate\Http\Request;
 
 /**
@@ -16,19 +16,20 @@ use Illuminate\Http\Request;
 class RoleController extends BaseAdminController
 {
     /**
-     * @var Roles
+     * @var RoleRepositories
      */
-    private $roles;
+    private $repositories;
 
     /**
      * RolesController constructor.
+     * @param RoleRepositories $repositories
+     * @param Request $request
      */
-    public function __construct(Roles $roles, Request $request)
+    public function __construct(RoleRepositories $repositories, Request $request)
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
-        $this->roles = $roles;
+        $this->repositories = $repositories;
     }
 
     /**
@@ -60,7 +61,7 @@ class RoleController extends BaseAdminController
         ];
         $this->setBreadcumb($data);
         //assign data
-        $this->assign('roles', $this->roles->getListPaginate(10));
+        $this->assign('roles', $this->repositories->getListPaginate(10));
         // display page
         return $this->displayPage();
     }
@@ -68,9 +69,10 @@ class RoleController extends BaseAdminController
     /**
      * Show the form for creating a new resource.
      *
+     * @param PortalRepositories $portals
      * @return \Illuminate\Http\Response
      */
-    public function create(Portals $portals)
+    public function create(PortalRepositories $portals)
     {
         // set rule page
         $this->setRule('c');
@@ -117,7 +119,7 @@ class RoleController extends BaseAdminController
         // set rule page
         $this->setRule('c');
         // proses simpan data role ke database
-        if($this->roles->createRole($request->all())){
+        if($this->repositories->createRole($request->all())){
             // set notificarion success
             flash('Berhasil tambah data role.')->success()->important();
         }else{
@@ -143,10 +145,10 @@ class RoleController extends BaseAdminController
     /**
      * Show edit form role from resource
      * @param Role $role
-     * @param Portals $portals
+     * @param PortalRepositories $portals
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(Role $role, Portals $portals)
+    public function edit(Role $role, PortalRepositories $portals)
     {
         // set rule page
         $this->setRule('u');
@@ -195,7 +197,7 @@ class RoleController extends BaseAdminController
         // set rule page
         $this->setRule('u');
         // proses update data di database
-        if($this->roles->updateRole($request->all(), $role)){
+        if($this->repositories->updateRole($request->all(), $role)){
             // set notificasi success
             flash('Berhasil ubah data role')->success()->important();
         }else{
@@ -223,7 +225,7 @@ class RoleController extends BaseAdminController
                 return response(['message' => $access['message'], 'status' => 'failed']);
             }
             // proses hapus role dari database
-            if($this->roles->deleteRole($role)){
+            if($this->repositories->deleteRole($role)){
                 // set response
                 return response(['message' => 'Berhasil menghapus user.', 'status' => 'success']);
             }

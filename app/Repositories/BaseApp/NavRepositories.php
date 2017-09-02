@@ -8,15 +8,15 @@
 
 namespace App\Repositories\BaseApp;
 
-use App\Nav;
-use App\Portal;
+use App\Model\Nav;
+use App\Model\Portal;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Navs
  * @package App\Repositories\BaseApp
  */
-class Navs
+class NavRepositories
 {
     /**
      * Mengambil list menu berdasarkan portal
@@ -173,5 +173,10 @@ class Navs
     public static function getById($id)
     {
         return Nav::findOrFail($id);
+    }
+
+    public function getCountNav()
+    {
+        return Nav::all()->count();
     }
 }

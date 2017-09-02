@@ -9,10 +9,10 @@
 namespace App\Repositories\BaseApp;
 
 
-use App\Role;
+use App\Model\Role;
 use Illuminate\Support\Facades\Auth;
 
-class Roles
+class RoleRepositories
 {
     /**
      * Mengambil list data role dengan limit dan pagination
@@ -31,6 +31,11 @@ class Roles
     public function getAllSelect()
     {
         return Role::pluck('role_nm','id');
+    }
+
+    public function getCountRole()
+    {
+        return Role::all()->count();
     }
 
     /**

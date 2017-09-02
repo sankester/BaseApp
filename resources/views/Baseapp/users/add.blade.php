@@ -14,7 +14,7 @@
                 </a>
             </div>
         </div>
-        {!! Form::model($article = new \App\User(),['url' => 'base/users'], ['class' => 'form-horizontal form-validate-user']) !!}
+        {!! Form::model($article = new \App\Model\User(),['url' => 'base/users'], ['class' => 'form-horizontal form-validate-user']) !!}
             @include('Baseapp.users.form',['textButton' => 'Add', 'icon' => 'icon-plus3'])
         {!! Form::close() !!}
     </div>

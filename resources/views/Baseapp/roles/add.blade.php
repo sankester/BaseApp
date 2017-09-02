@@ -14,7 +14,7 @@
             </a>
         </div>
     </div>
-    {!! Form::model($role = new \App\Role(),['url' => 'base/roles'], ['class' => 'form-horizontal form-validate-role ']) !!}
+    {!! Form::model($role = new \App\Model\Role(),['url' => 'base/roles'], ['class' => 'form-horizontal form-validate-role ']) !!}
         @include('Baseapp.roles.form',['textButton' => 'Add', 'icon' => 'icon-plus3'])
     {!! Form::close() !!}
 </div>

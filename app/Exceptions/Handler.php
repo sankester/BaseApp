@@ -58,12 +58,17 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        $redirect = '';
-
+		$redirect = '';
+        /**
+         * ajax exeption
+         */
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
+        /**
+         * switch segment 1
+         */
         switch($request->segment(1)){
             case 'base' :
                 $redirect = redirect()->guest(route('base.login'));

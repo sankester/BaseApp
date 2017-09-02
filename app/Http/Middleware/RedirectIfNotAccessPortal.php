@@ -16,13 +16,14 @@ class RedirectIfNotAccessPortal
      */
     public function handle($request, Closure $next, $portal_name)
     {
-        $request =  $next($request);
+        $redirect =  $next($request);
         if (Auth::check()) {
             if(!Auth::user()->isPortal($portal_name)){
-                $request = Auth::user()->role->default_page;
+                $redirect = Auth::user()->role->default_page;
+                flash('You dont have access in portal')->error()->important();
+                return redirect($redirect);
             }
         }
-        flash('You dont have access in portal')->error()->important();
-        return redirect($request);
+        return $redirect;
     }
 }

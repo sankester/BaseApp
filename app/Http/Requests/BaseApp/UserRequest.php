@@ -46,17 +46,19 @@ class UserRequest extends FormRequest
                 $rules = [
                     'name' =>  'required|min:3|max:100',
                 ];
+
                 // cek apakah username sama dengan username yang di gunakan
-                if($this->input('username') == Auth::user()->username){
+                if($this->input('username') == $this->user->username){
                     // ignore update
-                    $rules['username'] = 'required|min:3|max:50|unique:users,id,'.Auth::user()->id;
+                    $rules['username'] = 'required|min:3|max:50|unique:users,id,'.$this->user->id;
                 }else{
                     // unique rule
                     $rules['username'] = 'required|min:3|max:50|unique:users';
                 }
                 // cek apakah password sama dengan passsword yang di gunakan
-                if($this->input('email') == Auth::user()->email){
-                    $rules['email'] = 'required|email|unique:users,email,'.Auth::user()->id;
+                if($this->input('email') == $this->user->email){
+
+                    $rules['email'] = 'required|email|unique:users,email,'.$this->user->id;
                 }else{
                     $rules['email'] =  'required|email|unique:users';
                 }

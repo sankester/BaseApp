@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
-use App\Repositories\BaseApp\Navs;
+use App\Repositories\BaseApp\NavRepositories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -21,7 +21,7 @@ class ForbiddenAccess extends BaseAdminController
         $this->setTemplate('errors.BaseApp.error_page');
         // get navigation info
         if (!empty($nav_id)) {
-            $result = Navs::getById($nav_id)->toArray();
+            $result = NavRepositories::getById($nav_id)->toArray();
         }
         switch ($code) {
             case 403 :
