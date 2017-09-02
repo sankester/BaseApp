@@ -8,8 +8,6 @@ use App\Repositories\BaseApp\Roles;
 use App\Repositories\BaseApp\Users;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 /**
  * Class UserController
  * @package App\Http\Controllers\BaseApp

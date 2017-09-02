@@ -36,6 +36,8 @@ Route::prefix('base')->group(function () {
      * Route User
      */
     Route::resource('users','BaseApp\UserController');
+    Route::get('profile','BaseApp\ProfileController@index')->name('base.profile');
+    Route::patch('profile','BaseApp\ProfileController@update')->name('base.updateprofile');
     /**
      * Route Portals
      */

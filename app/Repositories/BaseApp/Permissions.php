@@ -24,7 +24,7 @@ class Permissions
     public function getListMenu($portalId, $parentId, $indent, $navViews = array())
     {
         $portal = Portal::findOrFail($portalId);
-        $navs = $portal->navs->where('parent_id', $parentId)->all();
+        $navs = $portal->navs()->where('parent_id', $parentId)->orderBy('nav_no', 'asc')->get();
         if(! empty($navs)){
             foreach ($navs as $key => $nav) {
                 $defaultAccess = ['c' =>'0','r' =>'0','u' =>'0','d' =>'0'];

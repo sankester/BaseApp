@@ -88,7 +88,7 @@ class BaseAdminController extends Controller
         }
         isset($nav->portal_id) ?  $this->portal_id = $nav->portal_id: $this->portal_id ;
         isset($nav->portal_id) ?  $this->nav_id = $nav->id : $this->nav_id  ;
-        $this->assign('nav_id', $nav->id);
+        $this->assign('nav_id', $this->nav_id);
     }
 
 

@@ -2,11 +2,7 @@
 
 @section('content')
 
-    @if (session('status'))
-        <div class="alert alert-success">
-            {{ session('status') }}
-        </div>
-        @endif
+
                 <!-- Password recovery -->
         <form method="POST" action="{{ route('password.email') }}">
             <div class="panel panel-body login-form">
@@ -17,7 +13,11 @@
                         <small class="display-block">Kami akan mengirimkan kode konfirmasi ke email anda.</small>
                     </h5>
                 </div>
-
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }} has-feedback">
                     <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="E-Mail" required>
                     @if ($errors->has('email'))

@@ -16,6 +16,8 @@ issue
   issue : Can`t add attribute in form helper Form::Open()
 - code  : 4
   issue : Can`t create role_id foreign key in users table
+- code  : 5
+  issue : smptp not support
 
 solved
 ------------------------
@@ -38,4 +40,6 @@ solved
       - model($model, array $options = []) -> model($model, array $options = [], array $attributes = [])
 
 - code   : 4
-  solved : manual foreign key
+  solved : manual foreign key / new migration after create all table and create foreign key
+
+

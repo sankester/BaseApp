@@ -30,33 +30,44 @@ class Navs
     {
         $portal = Portal::findOrFail($portalId);
         $navs = $portal->navs()->where('parent_id', $parentId)->orderBy('nav_no', 'asc')->get()->toArray();
-        if(! empty($navs)){
+        if (!empty($navs)) {
             foreach ($navs as $key => $nav) {
-                $nav['nav_title'] = $indent.$nav['nav_title'];
+                $nav['nav_title'] = $indent . $nav['nav_title'];
                 $childs = $portal->navs()->where('parent_id', $nav['id'])->get()->toArray();
                 $navViews[] = $nav;
-                if(!empty($childs)){
-                    $indentChils = $indent."--- ";
-                    $navViews = $this->getMenuByPortal($nav['portal_id'],$nav['id'], $indentChils, $navViews);
+                if (!empty($childs)) {
+                    $indentChils = $indent . "--- ";
+                    $navViews = $this->getMenuByPortal($nav['portal_id'], $nav['id'], $indentChils, $navViews);
                 }
             }
         }
-		return  $navViews ;
+        return $navViews;
     }
 
-    public function generateMenu($portalId , $nav_active)
+    /**
+     * Generate list menu
+     * @param $portalId
+     * @param $nav_active
+     * @return string
+     */
+    public function generateMenu($portalId, $nav_active)
     {
         $html = "";
         //get nav by parent
-        $navs =Auth::user()->role->navs()->where('parent_id', 0)->where('display_st', '1')->orderBy('nav_no', 'asc')->get();
+        $navs = Auth::user()->role->navs()->where('parent_id', 0)->where('display_st', '1')->orderBy('nav_no', 'asc')
+            ->wherePivot('c', '!=', 0,'and')
+            ->wherePivot('r', '!=', 0,'and')
+            ->wherePivot('u', '!=', 0,'and')
+            ->wherePivot('d', '!=', 0)
+            ->get();
         if (!empty($navs)) {
             foreach ($navs as $key => $nav) {
                 $selected = ($nav->id == $nav_active) ? "class='active'" : "";
                 $url = ($nav->nav_st == 'internal') ? url($nav->nav_url) : $nav->nav_url;
                 $target = ($nav->nav_st != 'internal') ? '_blank' : '_self';
-                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa '.$nav->nav_icon :$nav->nav_icon;
-                $html .= '<li '.$selected.'>';
-                $html .= '<a href="'.$url.'" target="'.$target.'><i class="'.$icon.'"></i><span>'.$nav->nav_title.'</span></a>';
+                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa ' . $nav->nav_icon : $nav->nav_icon;
+                $html .= '<li ' . $selected . '>';
+                $html .= '<a href="' . $url . '" target="' . $target . '"><i class="' . $icon . '"></i><span>' . $nav->nav_title . '</span></a>';
                 $str_child_html = $this->getChildNav($nav->id);
                 $html .= !empty($str_child_html) ? $str_child_html : '';
                 $html .= "</li>";
@@ -65,30 +76,33 @@ class Navs
         return $html;
     }
 
-    private function getChildNav($nav_id){
-
+    /**
+     * Generate child menu
+     * @param $nav_id
+     * @return string
+     */
+    private function getChildNav($nav_id)
+    {
         $navs = Nav::where('parent_id', $nav_id)->orderBy('nav_no', 'asc')->get();
         $html = '';
-        if($navs->count() > 0){
+        if ($navs->count() > 0) {
             $html .= '<ul>';
             foreach ($navs as $key => $nav) {
                 $html .= "<li>";
                 $url = ($nav->nav_st == 'internal') ? url($nav->nav_url) : $nav->nav_url;
                 $target = ($nav->nav_st != 'internal') ? '_blank' : '_self';
-                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa '.$nav->nav_icon :$nav->nav_icon;
-                $html .= '<a href="'.$url.'" target="'.$target.'"><i class="'.$icon.'"></i><span>'.$nav->nav_title.'</span></a>';
-                $childs =  Nav::where('parent_id', $nav->id)->orderBy('nav_no', 'asc')->get();
-                if(!empty($childs)){
+                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa ' . $nav->nav_icon : $nav->nav_icon;
+                $html .= '<a href="' . $url . '" target="' . $target . '"><i class="' . $icon . '"></i><span>' . $nav->nav_title . '</span></a>';
+                $childs = Nav::where('parent_id', $nav->id)->orderBy('nav_no', 'asc')->get();
+                if (!empty($childs)) {
                     $html .= $this->getChildNav($nav->id);
                 }
                 $html .= "</li>";
             }
             $html .= '</ul>';
         }
-        return  $html ;
+        return $html;
     }
-
-
 
     /**
      * Mengambil list menu berdasarkan parent
@@ -98,7 +112,7 @@ class Navs
     public static function getMenuParent($portal_id)
     {
         $listParent = array('0' => 'Tidak Ada');
-        $listMenu = (new self)->getMenuByPortal($portal_id, 0,'' );
+        $listMenu = (new self)->getMenuByPortal($portal_id, 0, '');
         foreach ($listMenu as $key => $item) {
             $listParent[$item['id']] = $item['nav_title'];
         }
@@ -106,9 +120,14 @@ class Navs
         return $listParent;
     }
 
+    /**
+     * Get data navigation by url
+     * @param $url
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     */
     public static function getNavByUrl($url)
     {
-        $nav = Nav::where('nav_url','=',$url)->first();
+        $nav = Nav::where('nav_url', '=', $url)->first();
         return $nav;
     }
 
@@ -130,7 +149,8 @@ class Navs
      * @return bool
      * @internal param $id
      */
-    public function updateNav($params, $nav){
+    public function updateNav($params, $nav)
+    {
         return $nav->update($params);
     }
 
@@ -145,6 +165,11 @@ class Navs
         return $nav->delete();
     }
 
+    /**
+     * Get data navigation by id
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     */
     public static function getById($id)
     {
         return Nav::findOrFail($id);

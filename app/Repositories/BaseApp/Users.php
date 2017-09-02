@@ -11,6 +11,7 @@ namespace App\Repositories\BaseApp;
 use Carbon\Carbon;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class Users
@@ -40,6 +41,7 @@ class Users
      */
     public function createUser($params)
     {
+        $params['password'] = Hash::make($params['password']);
         $params['lock_st'] = 0;
         $params['registerDate'] = Carbon::now();
         return User::create($params);
@@ -53,7 +55,22 @@ class Users
      * @internal param $id
      */
     public function updateUser($params, User $user){
+        if(isset( $params['password'])){
+            if(!empty( $params['password'])){
+                $params['password'] = Hash::make($params['password']);
+            }
+        }
         return $user->update($params);
+    }
+
+    public function updateUserLogin($params)
+    {
+        if(!is_null( $params['password'])){
+            $params['password'] = Hash::make($params['password']);
+        }else{
+            $params['password'] = Auth::user()->getAuthPassword();
+        }
+        return Auth::user()->update($params);
     }
 
     /**

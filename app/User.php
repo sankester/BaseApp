@@ -32,15 +32,6 @@ class User extends Authenticatable
     // set kolom to date object
     protected $dates = ['activation'];
 
-    /**
-     * Set the password's hashing.
-     *
-     * @param  string  $value
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
 
     public function getActivationAttribute($date)
     {
