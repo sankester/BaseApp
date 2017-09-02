@@ -23,7 +23,6 @@ class NavController extends BaseAdminController
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
         // initial nav repositories
         $this->navs = $navs;
     }

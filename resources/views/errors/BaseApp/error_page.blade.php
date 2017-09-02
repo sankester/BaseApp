@@ -9,7 +9,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <a href="{{ URL::previous() }}" class="btn btn-primary btn-block content-group"><i class="icon-circle-left2 position-left"></i> Kembali ke halaman sebelumnya.</a>
+                    <a href="{{ url(Auth::user()->role->default_page) }}" class="btn btn-primary btn-block content-group"><i class="icon-circle-left2 position-left"></i> Kembali ke halaman utama.</a>
                 </div>
             </div>
         </div>

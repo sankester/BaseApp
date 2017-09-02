@@ -45,6 +45,7 @@ class BaseAdminController extends Controller
     {
         $this->request = $request;
         $this->middleware('auth');
+        $this->middleware('isPortal:BaseApp Admin Portal');
         $this->initialPage();
         $this->setDefaultCss();
         $this->setDefaultJs();

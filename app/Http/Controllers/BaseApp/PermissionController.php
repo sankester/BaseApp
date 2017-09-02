@@ -25,7 +25,6 @@ class PermissionController extends BaseAdminController
     public function __construct(Permissions $permissions, Request $request, Roles $roles)
     {
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
         $this->permissions = $permissions;
         $this->roles = $roles;
     }

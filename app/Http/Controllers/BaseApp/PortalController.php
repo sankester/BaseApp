@@ -24,7 +24,6 @@ class PortalController extends BaseAdminController
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
         // initial portal repositories
         $this->portals = $portals;
     }

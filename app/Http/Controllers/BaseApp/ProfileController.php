@@ -21,7 +21,6 @@ class ProfileController extends BaseAdminController
     {
         // load parent construct
         parent::__construct($request);
-        $this->middleware('isPortal:BaseApp Admin Portal');
         $this->users = $users;
     }
 
