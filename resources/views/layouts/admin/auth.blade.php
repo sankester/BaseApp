@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel Base App') }}</title>
 
     <!-- Global stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -47,24 +47,6 @@
 
     <div class="navbar-collapse collapse" id="navbar-mobile">
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="#">
-                    <i class="icon-display4"></i> <span class="visible-xs-inline-block position-right"> Go to website</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="icon-user-tie"></i> <span class="visible-xs-inline-block position-right"> Contact admin</span>
-                </a>
-            </li>
-
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="icon-cog3"></i>
-                    <span class="visible-xs-inline-block position-right"> Options</span>
-                </a>
-            </li>
         </ul>
     </div>
 </div>

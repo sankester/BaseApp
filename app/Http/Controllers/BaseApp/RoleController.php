@@ -27,6 +27,7 @@ class RoleController extends BaseAdminController
     {
         // load parent construct
         parent::__construct($request);
+        $this->middleware('isPortal:BaseApp Admin Portal');
         $this->roles = $roles;
     }
 

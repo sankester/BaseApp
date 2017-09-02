@@ -42,4 +42,7 @@ solved
 - code   : 4
   solved : manual foreign key / new migration after create all table and create foreign key
 
+- code   : 5
+  solved : delete cache config
+
 

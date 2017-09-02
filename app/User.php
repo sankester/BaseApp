@@ -62,4 +62,12 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    public function isPortal($portal_nm)
+    {
+        if($this->role->portal->portal_nm == $portal_nm){
+            return true;
+        }
+        return false;
+    }
 }

@@ -16,6 +16,7 @@ class HomeController extends BaseAdminController
     public function __construct(Request $request)
     {
        parent::__construct($request);
+        $this->middleware('isPortal:BaseApp Admin Portal');
     }
 
     /**

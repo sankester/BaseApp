@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -56,9 +58,21 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        $redirect = '';
+
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-        return redirect()->guest(route('login'));
+
+        switch($request->segment(1)){
+            case 'base' :
+                $redirect = redirect()->guest(route('base.login'));
+                break;
+            default :
+                $redirect = redirect()->guest(url('/'));
+                break;
+        }
+
+        return $redirect;
     }
 }
