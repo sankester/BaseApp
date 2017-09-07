@@ -58,7 +58,6 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-		$redirect = '';
         /**
          * ajax exeption
          */
@@ -79,5 +78,6 @@ class Handler extends ExceptionHandler
         }
 
         return $redirect;
+
     }
 }

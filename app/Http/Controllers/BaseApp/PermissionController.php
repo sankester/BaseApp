@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BaseApp;
 
 use App\Http\Controllers\Base\BaseAdminController;
+
 use App\Repositories\BaseApp\PermissionRepositories;
 use App\Repositories\BaseApp\RoleRepositories;
 use App\Model\Role;
