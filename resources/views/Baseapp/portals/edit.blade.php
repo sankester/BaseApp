@@ -7,7 +7,7 @@
         <!-- Input group addons -->
 <div class="panel  panel-white">
     <div class="panel-heading">
-        <h5 class="panel-title">Form Edit User</h5>
+        <h5 class="panel-title">Form Edit Portal</h5>
         <div class="heading-elements">
             <a href="{{ route('portals.index') }}" class="btn btn-xs border-slate text-slate-800 btn-flat btn-rounded">
                 <i class="icon-arrow-left7 position-left"></i> Kembali

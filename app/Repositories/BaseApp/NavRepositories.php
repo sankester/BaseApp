@@ -139,7 +139,7 @@ class NavRepositories
      */
     public function createNav($params)
     {
-        LogRepository::addLog('insert', 'Tambah menu dengan data',$params );
+        LogRepository::addLog('insert', 'Tambah menu dengan data',null,$params );
         $params['user_id'] = Auth::user()->id;
         return Nav::create($params);
     }
@@ -153,7 +153,7 @@ class NavRepositories
      */
     public function updateNav($params, $nav)
     {
-        LogRepository::addLog('update', 'Update portal dengan data',$nav,$params );
+        LogRepository::addLog('update', 'Update menu dengan data',$nav,$params );
         return $nav->update($params);
     }
 
@@ -165,7 +165,7 @@ class NavRepositories
      */
     public function deleteNav($nav)
     {
-        LogRepository::addLog('delete','Hapus manu dengan nama menu : '.$nav->nav_nm);
+        LogRepository::addLog('delete','Hapus menu dengan nama menu : '.$nav->nav_nm);
         return $nav->delete();
     }
 

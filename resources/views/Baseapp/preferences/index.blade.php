@@ -1,17 +1,20 @@
 @extends('layouts.admin.app')
 
 @section('page-header')
-@include('layouts.admin.page-header')
+    @include('layouts.admin.page-header')
 @stop
 @section('content')
-        <!-- Simple lists -->
+<!-- Simple lists -->
 <div class="row">
     <div class="col-md-12">
         <!-- Table header styling -->
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h5 class="panel-title">Table List Role</h5>
+                <h5 class="panel-title">Table List Preference</h5>
                 <div class="heading-elements">
+                    <a href="{{ route('preferences.create') }}" class="btn btn-xs border-slate text-slate-800 btn-flat btn-rounded">
+                        Tambah Preference
+                    </a>
                 </div>
             </div>
             <div class="panel-body">
@@ -23,28 +26,29 @@
                         <thead>
                         <tr class="bg-teal-400">
                             <th>#</th>
-                            <th>Portal</th>
-                            <th>Role</th>
-                            <th>Deskrisi</th>
+                            <th>Nama</th>
+                            <th>Site Title</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody class="table-bordered">
-                        @forelse($roles as $key => $role)
+                        @forelse($preferences as $key => $preference)
                             <tr>
-                                <td class="text-center">{{ (($roles->currentPage() - 1 ) * $roles->perPage() ) + ($key+1) }}</td>
-                                <td>{{$role->portal->portal_nm}}</td>
-                                <td>{{$role->role_nm}}</td>
-                                <td>{{$role->role_desc}}</td>
-                                <td class="text-center">
+                                <td>{{ (($preferences->currentPage() - 1 ) * $preferences->perPage() ) + ($key+1) }}</td>
+                                <td>{{$preference->pref_group}}</td>
+                                <td>{{$preference->pref_name}}</td>
+                                <td>{{$preference->pref_value}}</td>
+                                <td>
                                     <ul class="icons-list">
-                                        <li class="text-primary-600"><a href="{{ route('permissions.edit',$role->id) }}"><i class="icon-pencil7"></i></a></li>
+                                        <li class="text-primary-600"><a href="{{ route('preferences.edit',$preference->id) }}"><i class="icon-pencil7"></i></a></li>
+                                        <li class="text-danger-600"><a href="#" class="delete-preference"  data-url ="{{ route('preferences.destroy',$preference->id) }}" data-token="{{ csrf_token() }}"><i class="icon-trash"></i></a></li>
                                     </ul>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <div class="alert alert-info alert-bordered">
                                         <span class="text-semibold">Info !</span> Data tidak ditemukan.
                                     </div>
@@ -58,9 +62,9 @@
                 <div class="row">
                     <div class="col-md-6 col-xs-12 m-top-20">
                         <div class="pull-left">
-                            @if ($roles->hasPages())
+                            @if ($preferences->hasPages())
                                 <p>
-                                    Halaman {{ $roles->currentPage() }} dari {{ $roles->total() }} Halaman
+                                    Halaman {{ $preferences->currentPage() }} dari {{ $preferences->total() }} Halaman
                                 </p>
                             @endif
                         </div>
@@ -68,7 +72,7 @@
                     <div class="col-md-6 col-xs-12 m-top-20">
                         <div class="pull-right">
                             {{--generate pagination--}}
-                            {{ $roles->links()}}
+                            {{ $preferences->links()}}
                             {{-- end generate pagination--}}
                         </div>
                     </div>
@@ -76,7 +80,6 @@
             </div>
         </div>
         <!-- /table header styling -->
-
     </div>
 </div>
 <!-- /simple lists -->

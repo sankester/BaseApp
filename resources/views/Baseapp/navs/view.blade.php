@@ -24,8 +24,7 @@
                     </a>
                 </div>
             </div>
-            <div class="panel-body">
-                @if(!empty($listMenu))
+            <div class="panel-body">)
                     {{--include notification--}}
                     @include('flash::message')
                     {{--end include notification--}}
@@ -41,7 +40,7 @@
                             </tr>
                             </thead>
                             <tbody class="table-bordered">
-                            @foreach($listMenu as $key => $menu)
+                            @forelse($listMenu as $key => $menu)
                                 <tr>
                                     <td class="text-center">{{ ($key+1) }}</td>
                                     <td>{{ $menu['nav_title'] }}</td>
@@ -59,15 +58,18 @@
                                         </ul>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="alert alert-info alert-bordered">
+                                            <span class="text-semibold">Info !</span> Tidak ada menu untuk portal ini.
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
-                @else
-                    <div class="alert alert-info alert-styled-left alert-arrow-left alert-bordered">
-                        <span class="text-semibold">Info !</span> Tidak ada menu untuk portal ini.
-                    </div>
-                @endif
             </div>
         </div>
         <!-- /table header styling -->

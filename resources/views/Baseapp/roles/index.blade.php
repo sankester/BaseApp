@@ -34,7 +34,7 @@
                         </tr>
                         </thead>
                         <tbody class="table-bordered">
-                        @foreach($roles as $key => $role)
+                        @forelse($roles as $key => $role)
                             <tr>
                                 <td>{{ (($roles->currentPage() - 1 ) * $roles->perPage() ) + ($key+1) }}</td>
                                 <td>{{$role->role_nm}}</td>
@@ -48,7 +48,15 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6">
+                                    <div class="alert alert-info alert-bordered">
+                                        <span class="text-semibold">Info !</span> Data tidak ditemukan.
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>

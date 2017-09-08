@@ -53,7 +53,7 @@ class UserRepositories
         $params['password'] = Hash::make($params['password']);
         $params['lock_st'] = 0;
         $params['registerDate'] = Carbon::now();
-        LogRepository::addLog('insert', 'Tambah user dengan data',$params );
+        LogRepository::addLog('insert', 'Tambah user dengan data',null,$params );
         return User::create($params);
     }
 

@@ -37,7 +37,7 @@
                             </tr>
                             </thead>
                             <tbody class="table-bordered">
-                            @foreach($listMenu as $key => $menu)
+                            @forelse($listMenu as $key => $menu)
                                 <tr>
                                     {!! Form::hidden('roles['.$key.'][nav_id]', $menu->id) !!}
                                     <td>
@@ -68,7 +68,15 @@
                                         </span>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="alert alert-info alert-bordered">
+                                            <span class="text-semibold">Info !</span> Data tidak ditemukan.
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>

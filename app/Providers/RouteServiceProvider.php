@@ -46,6 +46,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('base/permissions', function ($id) {
             return \App\Model\Role::all()->findOrFail($id);
         });
+
+        Route::bind('base/preferences', function ($id) {
+            return \App\Model\Preference::all()->findOrFail($id);
+        });
         /**
          * End bind base app model
          */

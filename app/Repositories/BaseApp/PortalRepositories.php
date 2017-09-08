@@ -66,7 +66,7 @@ class PortalRepositories
      */
     public function createPortal($params)
     {
-        LogRepository::addLog('insert', 'Tambah portal dengan data',$params );
+        LogRepository::addLog('insert', 'Tambah portal dengan data',null,$params );
         return Auth::user()->portals()->create($params);
     }
 

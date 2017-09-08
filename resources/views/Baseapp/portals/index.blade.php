@@ -33,7 +33,7 @@
                         </tr>
                         </thead>
                         <tbody class="table-bordered">
-                        @foreach($portals as $key => $portal)
+                        @forelse($portals as $key => $portal)
                             <tr>
                                 <td>{{ (($portals->currentPage() - 1 ) * $portals->perPage() ) + ($key+1) }}</td>
                                 <td>{{$portal->portal_nm}}</td>
@@ -46,7 +46,15 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="5">
+                                    <div class="alert alert-info alert-bordered">
+                                        <span class="text-semibold">Info !</span> Data tidak ditemukan.
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>

@@ -52,11 +52,7 @@ class MessageLog
     {
         switch($this->level){
             case 'insert' :
-                if( $this->cek_data() == true):
-                    $this->generateMessageColumnInsert();
-                else :
-                  return false;
-                endif;
+                $this->generateMessageColumnInsert();
                 break;
             case 'update' :
                 if( $this->cek_data() == true):
@@ -79,13 +75,13 @@ class MessageLog
      */
     private function cek_data()
     {
-
-        foreach ($this->data as $key => $item) {
-            if($this->model->$key != $item){
-               return true;
+        if(! empty($this->data)){
+            foreach ($this->data as $key => $item) {
+                if($this->model->$key != $item){
+                    return true;
+                }
             }
         }
-
         return false;
     }
 

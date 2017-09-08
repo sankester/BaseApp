@@ -60,6 +60,10 @@ Route::prefix('base')->group(function () {
     Route::get('/permissions/{role}','BaseApp\PermissionController@edit')->name('permissions.edit');
     Route::post('/permissions/{role}','BaseApp\PermissionController@update')->name('permissions.update');
     Route::get('/forbidden/page/{code}/{nav_id?}','BaseApp\ForbiddenAccess@page')->name('baseapp.forbidden');
+    /**
+     * Route Preferences
+     */
+    Route::resource('/preferences','BaseApp\PreferenceController');
 
 });
 

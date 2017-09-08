@@ -46,7 +46,7 @@ class RoleRepositories
      */
     public function createRole($params)
     {
-        LogRepository::addLog('insert', 'Tambah role dengan data',$params );
+        LogRepository::addLog('insert', 'Tambah role dengan data',null,$params );
         $params['user_id'] = Auth::user()->id;
         return Role::create($params);
     }

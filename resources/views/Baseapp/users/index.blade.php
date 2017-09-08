@@ -34,7 +34,7 @@
                             </tr>
                             </thead>
                             <tbody class="table-bordered">
-                            @foreach($users as $key => $user)
+                            @forelse($users as $key => $user)
                             <tr>
                                 <td>{{ (($users->currentPage() - 1 ) * $users->perPage() ) + ($key+1) }}</td>
                                 <td>{{$user->name}}</td>
@@ -48,7 +48,15 @@
                                     </ul>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="alert alert-info alert-bordered">
+                                            <span class="text-semibold">Info !</span> Data tidak ditemukan.
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                     </div>

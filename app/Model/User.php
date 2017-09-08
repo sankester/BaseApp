@@ -59,6 +59,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Satu user memiliki beberapa preference
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function preferences()
+    {
+        return $this->hasMany('App\Model\Preference');
+    }
+
+    /**
      * User mempunyai beberapa role
      */
     public function role()
