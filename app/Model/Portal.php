@@ -39,4 +39,13 @@ class Portal extends Model
     {
         return $this->hasMany('App\Model\Nav','portal_id','id');
     }
+
+    /**
+     * Portal mempunyai banyak log
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany('App\Model\Log');
+    }
 }

@@ -8,6 +8,7 @@
 
 namespace App\Repositories\BaseApp;
 
+use App\Libs\LogLib\LogRepository;
 use Carbon\Carbon;
 use App\Model\User;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,7 @@ class UserRepositories
         $params['password'] = Hash::make($params['password']);
         $params['lock_st'] = 0;
         $params['registerDate'] = Carbon::now();
+        LogRepository::addLog('insert', 'Tambah user dengan data',$params );
         return User::create($params);
     }
 
@@ -63,15 +65,14 @@ class UserRepositories
      * @internal param $id
      */
     public function updateUser($params, User $user){
-
         if(!empty( $params['password']) || !is_null($params['password'])){
             $params['password'] = Hash::make($params['password']);
         }
-
         if(is_null($params['password'])){
             unset($params['password']);
             unset($params['password_confirm']);
         }
+        LogRepository::addLog('update', 'Update user dengan data', Auth::user(),$params );
         return $user->update($params);
     }
 
@@ -87,6 +88,7 @@ class UserRepositories
         }else{
             $params['password'] = Auth::user()->getAuthPassword();
         }
+        LogRepository::addLog('update', 'Update user dengan data', Auth::user(),$params );
         return Auth::user()->update($params);
     }
 
@@ -99,6 +101,7 @@ class UserRepositories
      */
     public function deleteUser(User $user)
     {
+        LogRepository::addLog('delete','Hapus user dengan nama role : '.$user->name);
         return  $userDelete = $user->delete();
     }
 }

@@ -21,7 +21,8 @@ class UsersTableSeeder extends Seeder
             'activation' => str_random(50),
             'registerDate' => \Carbon\Carbon::now(),
             'created_at' => \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now()
+            'updated_at' => \Carbon\Carbon::now(),
+            'role_id' => 1
         ]);
     }
 }

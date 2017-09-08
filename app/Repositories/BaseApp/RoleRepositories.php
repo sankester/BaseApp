@@ -9,6 +9,7 @@
 namespace App\Repositories\BaseApp;
 
 
+use App\Libs\LogLib\LogRepository;
 use App\Model\Role;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,6 +46,7 @@ class RoleRepositories
      */
     public function createRole($params)
     {
+        LogRepository::addLog('insert', 'Tambah role dengan data',$params );
         $params['user_id'] = Auth::user()->id;
         return Role::create($params);
     }
@@ -52,21 +54,25 @@ class RoleRepositories
     /**
      * Proses mengupdate data portal di database
      * @param $params
-     * @param $id
+     * @param Role $role
      * @return bool
+     * @internal param $id
      */
     public function updateRole($params, Role $role){
+        LogRepository::addLog('update', 'Update role dengan data',$role,$params );
         return $role->update($params);
     }
 
     /**
      * Proses menghapus  role dari database
-     * @param $id
+     * @param Role $role
      * @return bool|null
      * @throws \Exception
+     * @internal param $id
      */
     public function deleteRole(Role $role)
     {
+        LogRepository::addLog('delete','Hapus role dengan nama role : '.$role->role_nm);
         return  $roleDelete = $role->delete();
     }
 }

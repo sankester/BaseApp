@@ -8,6 +8,7 @@
 
 namespace App\Repositories\BaseApp;
 
+use App\Libs\LogLib\LogRepository;
 use App\Model\Portal;
 use App\Model\Role;
 
@@ -71,6 +72,8 @@ class PermissionRepositories
         }
         // update date
         $this->syncRole($role, $roleToUpdate);
+        // log
+        LogRepository::addLog('Update Permissions', 'Ubah data ppermissions untuk role '. $role->role_nm);
     }
 
     /**

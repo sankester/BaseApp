@@ -32,6 +32,10 @@ class User extends Authenticatable
     protected $dates = ['activation'];
 
 
+    /**
+     * @param $date
+     * @return string
+     */
     public function getActivationAttribute($date)
     {
         return Carbon::parse($date)->format('Y-m-d');
@@ -46,6 +50,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Mempunyai beberapa log
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany('App\Model\Log');
+    }
+
+    /**
      * User mempunyai beberapa role
      */
     public function role()
@@ -53,6 +66,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Model\Role');
     }
 
+    /**
+     * @param $portal
+     * @return bool
+     */
     public function hasPortal($portal)
     {
         if ($this->role()->portal()->where('id', $portal)->first()) {
@@ -62,6 +79,11 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * User memiliki portal
+     * @param $portal_nm
+     * @return bool
+     */
     public function isPortal($portal_nm)
     {
         if($this->role->portal->portal_nm == $portal_nm){

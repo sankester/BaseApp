@@ -9,6 +9,7 @@
 namespace App\Repositories\BaseApp;
 
 
+use App\Libs\LogLib\LogRepository;
 use App\Model\Portal;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,9 @@ class PortalRepositories
         return Portal::all();
     }
 
+    /**
+     * @return int
+     */
     public function getCountPortal()
     {
         return Portal::all()->count();
@@ -62,6 +66,7 @@ class PortalRepositories
      */
     public function createPortal($params)
     {
+        LogRepository::addLog('insert', 'Tambah portal dengan data',$params );
         return Auth::user()->portals()->create($params);
     }
 
@@ -73,17 +78,20 @@ class PortalRepositories
      * @internal param $id
      */
     public function updatePortal($params, Portal $portal){
+        LogRepository::addLog('update', 'Update portal dengan data',$portal,$params );
         return $portal->update($params);
     }
 
     /**
      * Proses menghapus data portal dari database
-     * @param $id
+     * @param Portal $portal
      * @return bool|null
      * @throws \Exception
+     * @internal param $id
      */
     public function deletePortal(Portal $portal)
     {
+        LogRepository::addLog('delete','Hapus portal dengan nama portal : '.$portal->portal_nm);
         return  $portalDelete = $portal->delete();
     }
 }
