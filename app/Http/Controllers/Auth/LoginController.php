@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Libs\RecaptchaLib\Recaptcha;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Model\User;
 use Illuminate\Http\Request;
@@ -49,16 +50,21 @@ class LoginController extends Controller
             $this->fireLockoutEvent($request);
             return $this->sendLockoutResponse($request);
         }
-        // cek portal user
-        if(!is_null( User::where('username','=', $request->username)->first())){
-            $user = User::where('username','=', $request->username)->first()->role()->where('portal_id','=', $this->getPortalId())->first();
-            if(!is_null($user)) {
-                if ($this->attemptLogin($request)) {
-                    return $this->sendLoginResponse($request);
-                }
+        //cek captcha
+        if(Recaptcha::validateRecaptcha($request->input('g-recaptcha-response')) == true){
+            // cek portal user
+            if(!is_null( User::where('username','=', $request->username)->first())){
+                $user = User::where('username','=', $request->username)->first()->role()->where('portal_id','=', $this->getPortalId())->first();
+                if(!is_null($user)) {
+                    if ($this->attemptLogin($request)) {
+                        return $this->sendLoginResponse($request);
+                    }
 
-                $this->incrementLoginAttempts($request);
+                    $this->incrementLoginAttempts($request);
+                }
             }
+        }else{
+            return $this->sendFailedLoginResponse($request, true);
         }
         // default error
         return $this->sendFailedLoginResponse($request);
@@ -67,4 +73,14 @@ class LoginController extends Controller
     protected function getPortalId(){
         return 1 ;
     }
+
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'g-recaptcha-response'=>'required'
+        ]);
+    }
+
 }

@@ -55,23 +55,22 @@ class NavRepositories
     {
         $html = "";
         //get nav by parent
-        $navs = Auth::user()->role->navs()->where('parent_id', 0)->where('display_st', '1')->orderBy('nav_no', 'asc')
-            ->wherePivot('c', '!=', 0,'and')
-            ->wherePivot('r', '!=', 0,'and')
-            ->wherePivot('u', '!=', 0,'and')
-            ->wherePivot('d', '!=', 0)
-            ->get();
+        $navs = Auth::user()->role->navs()->where('parent_id', 0)->where('display_st', '1')->orderBy('nav_no', 'asc')->get();
         if (!empty($navs)) {
             foreach ($navs as $key => $nav) {
-                $selected = ($nav->id == $nav_active) ? "class='active'" : "";
-                $url = ($nav->nav_st == 'internal') ? url($nav->nav_url) : $nav->nav_url;
-                $target = ($nav->nav_st != 'internal') ? '_blank' : '_self';
-                $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa ' . $nav->nav_icon : $nav->nav_icon;
-                $html .= '<li ' . $selected . '>';
-                $html .= '<a href="' . $url . '" target="' . $target . '"><i class="' . $icon . '"></i><span>' . $nav->nav_title . '</span></a>';
-                $str_child_html = $this->getChildNav($nav->id);
-                $html .= !empty($str_child_html) ? $str_child_html : '';
-                $html .= "</li>";
+                if($nav->pivot->c == 0 and $nav->pivot->r == 0 and $nav->pivot->u == 0 and $nav->pivot->d == 0 ){
+                   continue;
+                }else{
+                    $selected = ($nav->id == $nav_active) ? "class='active'" : "";
+                    $url = ($nav->nav_st == 'internal') ? url($nav->nav_url) : $nav->nav_url;
+                    $target = ($nav->nav_st != 'internal') ? '_blank' : '_self';
+                    $icon = (str_contains($nav->nav_icon, 'fa-')) ? 'fa ' . $nav->nav_icon : $nav->nav_icon;
+                    $html .= '<li ' . $selected . '>';
+                    $html .= '<a href="' . $url . '" target="' . $target . '"><i class="' . $icon . '"></i><span>' . $nav->nav_title . '</span></a>';
+                    $str_child_html = $this->getChildNav($nav->id);
+                    $html .= !empty($str_child_html) ? $str_child_html : '';
+                    $html .= "</li>";
+                }
             }
         }
         return $html;

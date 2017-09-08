@@ -9,6 +9,13 @@
                 <h5 class="content-group">Login to your account
                     <small class="display-block">Enter your credentials below</small>
                 </h5>
+                @if( $errors->has('g-recaptcha-response') )
+                    <div class="alert alert-danger alert-bordered">
+                        <span class="text-semibold">
+                            {{ !empty($errors->first('g-recaptcha-response')) ? $errors->first('g-recaptcha-response') : 'Captcha tidak boleh kosong.' }}
+                        </span>
+                    </div>
+                @endif
             </div>
 
             <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }} has-feedback has-feedback-left">
@@ -40,6 +47,9 @@
             <div class="form-group">
                 <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} class="styled">&nbsp;&nbsp;Remember
                 Me
+            </div>
+            <div  class="form-group" >
+                {!! Recaptcha::generateCaptcha() !!}
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Sign in <i

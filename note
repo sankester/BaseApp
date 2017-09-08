@@ -6,6 +6,7 @@ notes
 - title      : install laracasts/flash
   requred    : 'composer require laracasts/flash'
 
+
 issue
 ------------------------
 - code  : 1

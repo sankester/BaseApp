@@ -118,17 +118,19 @@ trait AuthenticatesUsers
     }
 
 
-
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param bool $error_recapcha
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function sendFailedLoginResponse(Request $request)
+    protected function sendFailedLoginResponse(Request $request, $error_recapcha = false)
     {
         $errors = [$this->username() => trans('auth.failed')];
-
+        if($error_recapcha == true){
+            $errors['g-recaptcha-response'] = "Captcha Tidak Dikenali.";
+        }
         if ($request->expectsJson()) {
             return response()->json($errors, 422);
         }

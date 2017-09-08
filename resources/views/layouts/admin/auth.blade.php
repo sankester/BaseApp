@@ -26,6 +26,17 @@
     <script type="text/javascript" src="{{ asset('theme/admin-template/js/core/app.js')}}"></script>
     <!-- /theme JS files -->
     <script type="text/javascript" src="{{ asset('theme/admin-template/js/plugins/forms/styling/uniform.min.js')}}"></script>
+    {{--include rechaptcha js--}}
+    {!! Recaptcha::getRecaptchaJs() !!}
+    <style>
+        @media screen and (max-height: 800px){
+            #rc-imageselect, .g-recaptcha {
+                transform:scale(0.90);
+                -webkit-transform:scale(0.90);transform-origin:0 0;
+                -webkit-transform-origin:0 0;
+            }
+        }
+    </style>
 
 </head>
 

@@ -183,7 +183,6 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         // lacast flash
         Laracasts\Flash\FlashServiceProvider::class,
-
     ],
 
     /*
@@ -235,6 +234,7 @@ return [
         // laravel collective
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Recaptcha'   => App\Libs\RecaptchaLib\Recaptcha::class
     ],
 
 ];

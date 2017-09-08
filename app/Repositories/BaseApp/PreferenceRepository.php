@@ -34,6 +34,11 @@ class PreferenceRepository
         return Preference::all();
     }
 
+    public function getByGroupAndName($group,$name)
+    {
+        return Preference::where('pref_group','=',$group)->where('pref_name','=', $name)->firstOrFail();
+    }
+
     /**
      * @return int
      */
