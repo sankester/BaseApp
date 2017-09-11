@@ -73,7 +73,7 @@ class PermissionRepositories
         // update date
         $this->syncRole($role, $roleToUpdate);
         // log
-        LogRepository::addLog('Update Permissions', 'Ubah data ppermissions untuk role '. $role->role_nm);
+        LogRepository::addLog('Update Permissions', 'Ubah data permissions untuk role '. $role->role_nm);
     }
 
     /**

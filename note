@@ -6,6 +6,8 @@ notes
 - title      : install laracasts/flash
   requred    : 'composer require laracasts/flash'
 
+- title      : install mews/captcha
+  required   : 'composer require mews/captcha'
 
 issue
 ------------------------

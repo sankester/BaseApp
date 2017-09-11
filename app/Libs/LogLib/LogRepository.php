@@ -134,9 +134,9 @@ class LogRepository
      * @param $portal_id
      * @return \Illuminate\Support\Collection
      */
-    public static function getLogPortal($portal_id)
+    public static function getLogPortal($portal_id, $perPage)
     {
-        return Log::where('portal_id', $portal_id)->get();
+        return Log::where('portal_id', $portal_id)->latest()->paginate($perPage);
     }
 
     /**

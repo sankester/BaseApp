@@ -67,4 +67,67 @@
          </div>
       </div>
    </div>
+   <h6 class="content-group text-semibold">
+      Aktifitas Terakhir
+   </h6>
+   <div class="row">
+      <div class="col-md-12" id="list-log">
+         <div class="timeline timeline-left">
+            <div class="timeline-container">
+            @forelse($logs as $log)
+               <!-- Logs -->
+                  <div class="timeline-row">
+                     <div class="timeline-icon">
+                        <a href="#">
+                           {{Html::image('theme/admin-template/images/placeholder.jpg', 'log', ['class' => 'img-circle'])}}
+                        </a>
+                     </div>
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <div class="panel panel-flat timeline-content">
+                              <div class="panel-heading">
+                                 <h6 class="panel-title">{{ $log->user->name }}<a class="heading-elements-toggle"><i class="icon-more"></i></a></h6>
+                                 <div class="heading-elements">
+                                    <span class="heading-text"><i class="icon-checkmark-circle position-left text-success"></i> {{ $log->created_at->diffForHumans()}}</span>
+                                    <ul class="icons-list">
+                                    </ul>
+                                 </div>
+                              </div>
+
+                              <div class="panel-body">
+                                 <h6 class="content-group">
+                                    <i class="icon-user-check position-left"></i>
+                                    <a href="#"></a> {{ $log->action }}:
+                                 </h6>
+
+                                 <blockquote>
+                                    <p>{!! $log->description !!} </p>
+                                    <footer>{{ $log->user->username }}, <cite title="Source Title">{{ $log->created_at->format('h:i A') }}</cite></footer>
+                                 </blockquote>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- /Logs -->
+               @empty
+                  <div class="col-md-12">
+                     <div class="alert alert-info alert-bordered">
+                        <span class="text-semibold">Info !</span> Data tidak ditemukan.
+                     </div>
+                  </div>
+               @endforelse
+            </div>
+            {{--{!! $logs->links() !!}--}}
+         </div>
+      </div>
+      <div class="col-md-12 text-center" id="load-section">
+         <button type="button" class="btn bg-teal btn-ladda btn-ladda-load ladda-button" data-style="slide-up" data-spinner-size="20" data-url="{{ route('base.page') }}">
+            <span class="ladda-label">Load More</span>
+            <span class="ladda-spinner"></span>
+            <div class="ladda-progress" style="width: 159px;"></div>
+         </button>
+      </div>
+   </div>
 @endsection
+

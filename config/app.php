@@ -181,8 +181,10 @@ return [
          */
         // larvel collective
         Collective\Html\HtmlServiceProvider::class,
-        // lacast flash
+        // laracast flash
         Laracasts\Flash\FlashServiceProvider::class,
+        // captcha
+        Mews\Captcha\CaptchaServiceProvider::class,
     ],
 
     /*
@@ -234,7 +236,8 @@ return [
         // laravel collective
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Recaptcha'   => App\Libs\RecaptchaLib\Recaptcha::class
+        'Recaptcha'   => App\Libs\RecaptchaLib\Recaptcha::class,
+        'Captcha' => Mews\Captcha\Facades\Captcha::class
     ],
 
 ];

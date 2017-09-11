@@ -29,7 +29,7 @@ trait PageTrait
     protected $template;
 
     /**
-     * 
+     * Default akses page
      * @var array
      */
     protected $akses_page = [
@@ -85,18 +85,18 @@ trait PageTrait
      * Tambah Css ke page
      * @param $params
      */
-    protected function loadCss($params)
+    protected function loadCss($path)
     {
-        $this->page->addCss($params);
+        $this->page->addCss($path);
     }
 
     /**
      * Tambah Js ke page
      * @param $params
      */
-    protected function loadJs($params)
+    protected function loadJs($path)
     {
-        $this->page->addJs($params);
+        $this->page->addJs($path);
     }
 
     /**

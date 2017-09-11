@@ -4,7 +4,7 @@
     @include('layouts.admin.page-header')
 @stop
 @section('content')
-        <!-- Simple lists -->
+    <!-- Simple lists -->
 <div class="row">
     <div class="col-md-12">
         <!-- Table header styling -->

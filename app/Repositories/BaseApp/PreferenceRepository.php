@@ -84,7 +84,7 @@ class PreferenceRepository
      */
     public function deletePreference(Preference $preference)
     {
-        LogRepository::addLog('delete','Hapus preference dengan nama preference : '.$preference->preference_name);
+        LogRepository::addLog('delete','Hapus preference dengan nama preference : '.$preference->pref_name);
         return  $preferenceDelete = $preference->delete();
     }
 }

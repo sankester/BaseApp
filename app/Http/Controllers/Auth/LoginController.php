@@ -22,7 +22,7 @@ class LoginController extends Controller
     |
     */
     use AuthenticatesUsers;
-    
+
     /**
      * Create a new controller instance.
      *
@@ -51,27 +51,34 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
         //cek captcha
-        if(Recaptcha::validateRecaptcha($request->input('g-recaptcha-response')) == true){
-            // cek portal user
-            if(!is_null( User::where('username','=', $request->username)->first())){
-                $user = User::where('username','=', $request->username)->first()->role()->where('portal_id','=', $this->getPortalId())->first();
-                if(!is_null($user)) {
-                    if ($this->attemptLogin($request)) {
-                        return $this->sendLoginResponse($request);
-                    }
-
-                    $this->incrementLoginAttempts($request);
+        /**
+         * if use google recaptcha
+         */
+//        if(Recaptcha::validateRecaptcha($request->input('g-recaptcha-response')) == true){
+        // cek portal user
+        if (!is_null(User::where('username', '=', $request->username)->first())) {
+            $user = User::where('username', '=', $request->username)->first()->role()->where('portal_id', '=', $this->getPortalId())->first();
+            if (!is_null($user)) {
+                if ($this->attemptLogin($request)) {
+                    return $this->sendLoginResponse($request);
                 }
+
+                $this->incrementLoginAttempts($request);
             }
-        }else{
-            return $this->sendFailedLoginResponse($request, true);
         }
+//        }else{
+//            return $this->sendFailedLoginResponse($request, true);
+//        }
+        /**
+         * end if use google recaptcha
+         */
         // default error
         return $this->sendFailedLoginResponse($request);
     }
 
-    protected function getPortalId(){
-        return 1 ;
+    protected function getPortalId()
+    {
+        return 1;
     }
 
     protected function validateLogin(Request $request)
@@ -79,8 +86,18 @@ class LoginController extends Controller
         $this->validate($request, [
             $this->username() => 'required|string',
             'password' => 'required|string',
-            'g-recaptcha-response'=>'required'
-        ]);
+            // use mews captcha
+            'captcha' => 'required|captcha'
+            // end mews captcha
+
+            // use google recaptcha
+//            'g-recaptcha-response'=>'required'
+            // end use google recaptcha
+        ], [
+                'required' => ':attribute tidak bloeh kosong.',
+                'string' => ':attribute tidak dikenali.',
+            ]
+        );
     }
 
 }
