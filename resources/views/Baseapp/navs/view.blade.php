@@ -24,7 +24,7 @@
                     </a>
                 </div>
             </div>
-            <div class="panel-body">)
+            <div class="panel-body">
                     {{--include notification--}}
                     @include('flash::message')
                     {{--end include notification--}}
