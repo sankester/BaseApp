@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: achva
+ * Date: 20/09/2017
+ * Time: 09:57
+ */
 
 namespace App\Http\Controllers\Base;
 
@@ -7,13 +13,8 @@ use App\Http\Controllers\Controller;
 use App\Libs\PageLib\PageTrait;
 use App\Repositories\BaseApp\NavRepositories;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-/**
- * Class BaseAdminController
- * @package App\Http\Controllers\Base
- */
-class BaseAdminController extends Controller
+class BaseOperatorController extends Controller
 {
     use PageTrait;
 
@@ -42,7 +43,7 @@ class BaseAdminController extends Controller
     {
         $this->request = $request;
         $this->middleware('auth');
-        $this->middleware('isPortal:BaseApp Admin Portal');
+        $this->middleware('isPortal:Operator');
         $this->initialPage();
         $this->setDefaultCss();
         $this->setDefaultJs();
@@ -59,7 +60,7 @@ class BaseAdminController extends Controller
             'theme/admin-template/css/all.css',
             'theme/admin-template/css/custom.css'
         ];
-       $this->loadCss($css);
+        $this->loadCss($css);
     }
 
     /**
@@ -106,5 +107,4 @@ class BaseAdminController extends Controller
             return $this->setErrorAccess($this->request, 'maaf, halaman yang anda request tidak tersedia.','404');
         endif;
     }
-
 }
